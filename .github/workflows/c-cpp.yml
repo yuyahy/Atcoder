@@ -9,10 +9,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-
       - name: Checkout (GitHub)
         uses: actions/checkout@v3
-
+        # tj-actions/changed-filesを動作させるために指定している
+        with: fetch-depth: 0
+      - id: changed-files
+        uses: tj-actions/changed-files@v39
+        id: changed-files
+        with:
+          files: |
+            **/*.{cpp}
+          files_separator: "\n"
+      - name: Output changed files
+        run: echo ${{ steps.changed-files.outputs.all_changed_files }}
       - name: Build and run dev container task
         uses: devcontainers/ci@v0.3
         with:
