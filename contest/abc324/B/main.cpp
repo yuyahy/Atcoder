@@ -28,26 +28,16 @@ int main() {
   ll N(0);
   cin >> N;
   bool bExist = false;
-  //   if (N % 2 == 0 || N % 3 == 0 || N == 1) bExist = true;
-  int MAX = 10000;
-  for (int x = 0; x < MAX; x++) {
-    ll two = std::pow(2, x);
-    if (two > N) break;
-    for (int y = 0; y < MAX; y++) {
-      ll three = std::pow(3, y);
-      if (two * three == N) {
-        bExist = true;
-        break;
-      } else if (two * three > N) {
-        break;
-      }
-    }
+
+  while (N % 2 == 0) {
+    N /= 2;
   }
 
+  while (N % 3 == 0) {
+    N /= 3;
+  }
+
+  bExist = N == 1 ? true : false;
   auto str_result = bExist ? "Yes" : "No";
   cout << str_result << endl;
-
-  //   for (int x = 0; x < count; x++) {
-  //     /* code */
-  //   }
 }
