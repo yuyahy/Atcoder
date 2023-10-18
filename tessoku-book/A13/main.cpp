@@ -45,40 +45,24 @@ int main() {
     }
   } else {
     // 解答にあったしゃくとり法
-    // cnt += 1;
-    vector<ll> counts(N, 0);
-    // for (ll i = 1; i < N; i++) {
-    //   counts[i] = i == 1 ? 1 : counts[i - 1];
-    //   // auto now = a_numbers[i];
-    //   // ll j = i + 1;
-    //   // auto target = a_numbers[j];
-    //   while (counts[i] < N &&
-    //          a_numbers[counts[i] + 1] - a_numbers[counts[i]] <= K) {
-    //     cnt++;
-    //     counts[i] += 1;
-    //   }
-    // }
     int right = 1;
     for (int left = 0; left < N; ++left) {
+      // int right = left;
       while (right < N && (a_numbers[right] - a_numbers[left] <= K)) {
         /* 実際に right を 1 進める */
         // ex: sum += a[right];
         ++right;
       }
-
       /* break した状態で right は条件を満たす最大なので、何かする */
       // ex: res += (right - left);
-      dump(right);
-      dump(left);
-      cnt += (right - left);
-
+      cnt += (right - 1 - left);
       /* left をインクリメントする準備 */
       // ex: if (right == left) ++right;
       // ex: else sum -= a[left];
-      left++;
+      if (right == left) {
+        ++right;
+      }
     }
-
-    dump(counts);
   }
   cout << cnt << endl;
 }
