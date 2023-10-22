@@ -16,4 +16,23 @@ RUN mkdir -p /root/atcoder-workspace
 
 RUN curl -s -S https://gist.githubusercontent.com/gghatano/1aab64239be88181d0fc91069c6fe9b4/raw/625a707e7b0c38777e5b8e9984871481243a8597/template.cpp >> /root/.atcodertools/template/template.cpp
 RUN curl -s -S https://gist.githubusercontent.com/gghatano/1aab64239be88181d0fc91069c6fe9b4/raw/625a707e7b0c38777e5b8e9984871481243a8597/zzz_algorithm.cpp >> /root/atcoder-workspace/algorighm.cpp
+
+RUN python -m pip install markupsafe==2.0.1
+# agenlogin tessoku-book --workspace /workspaces/atcoder
+RUN echo 'asub="atcoder-tools submit -f -u"'
+# TODO コンパイルオプションを増やす or makefileにする
+RUN echo 'alias atest="g++-12  -Wfatal-errors -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal -std=gnu++20 -I /tmp/ac-library main.cpp -D DEFINED_ONLY_IN_LOCAL; atcoder-tools test"' >> /root/.bashrc
+RUN echo 'alias agen="atcoder-tools gen --without-login --workspace=/workspaces/atcoder --template /workspaces/atcoder/my_template.cpp"' >> /root/.bashrc
+RUN echo 'alias agenlogin="atcoder-tools gen --workspace /workspaces/atcoder --template /workspaces/atcoder/my_template.cpp"' >> /root/.bashrc
+RUN echo 'alias asub="atcoder-tools submit -u"' >> /root/.bashrc
+
+# 以下はGithub Action用
+# Homebrewのインストール
+RUN /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+RUN echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /root/.bashrc
+RUN eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+# RUN brew install act
+# RUN curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
+
 CMD ["/bin/bash"]
