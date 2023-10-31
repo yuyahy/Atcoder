@@ -35,8 +35,8 @@ jobs:
         with:
           # Change this to be your CI task/script
           runCmd: |
-            echo $(dirname $WORKSPACE_PATH${{ steps.changed-files.outputs.all_changed_files }})
-            cd $(dirname $WORKSPACE_PATH$${{ steps.changed-files.outputs.all_changed_files }})
+            echo $(dirname ${WORKSPACE_PATH}${{ steps.changed-files.outputs.all_changed_files }})
+            cd $(dirname ${WORKSPACE_PATH}${{ steps.changed-files.outputs.all_changed_files }})
             ls
       # - name: Compiling cpp files and Checking if they are can pass test cases
       #   uses:
