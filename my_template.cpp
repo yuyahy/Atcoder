@@ -25,4 +25,5 @@ ll INF = numeric_limits<ll>::max() / 2;
 int main() {
   // set precision (10 digit)
   cout << setprecision(10);
+  // Github Actionsのテスト
 }

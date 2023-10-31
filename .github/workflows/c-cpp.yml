@@ -20,7 +20,7 @@ jobs:
       - name: Get changed files
         uses: tj-actions/changed-files@v39
         id: changed-files
-        # パスに関係なく変更があったcppファイルのパスを取得する
+        # パスに関係なく変更があったcppファイルのパスを全て取得する
         with:
           files: |
             **.cpp

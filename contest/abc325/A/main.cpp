@@ -28,5 +28,6 @@ int main() {
   std::string name;
   cin >> name;
   //   dump(name);
+  // Github Actionsのテスト
   cout << name << " san" << endl;
 }
