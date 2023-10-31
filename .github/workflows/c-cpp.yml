@@ -20,10 +20,10 @@ jobs:
       - name: Get changed files
         uses: tj-actions/changed-files@v39
         id: changed-files
-        with:
-          files: |
-            **/*.{cpp}
-          files_separator: "\n"
+        # with:
+        #   files: |
+        #     **/*.{cpp}
+        #   files_separator: "\n"
       - name: Output changed files
         run: echo ${{ steps.changed-files.outputs.all_changed_files }}
       - name: Build and run dev container task
