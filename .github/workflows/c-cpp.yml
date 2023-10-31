@@ -30,11 +30,13 @@ jobs:
         # TODO: 仮組みできたら、「変更ファイルを取得する」ジョブ、「DevContainerを立ち上げ & コンパイル、atestする」ジョブに分ける
       - name: Build and run dev container task
         uses: devcontainers/ci@v0.3
+        env:
+          WORKSPACE_PATH: /workspaces/atcoder/
         with:
           # Change this to be your CI task/script
           runCmd: |
-            echo $(dirname ${{ steps.changed-files.outputs.all_changed_files }})
-            cd $(dirname ${{ steps.changed-files.outputs.all_changed_files }})
+            echo $(dirname $WORKSPACE_PATH${{ steps.changed-files.outputs.all_changed_files }})
+            cd $(dirname $WORKSPACE_PATH$${{ steps.changed-files.outputs.all_changed_files }})
             ls
       # - name: Compiling cpp files and Checking if they are can pass test cases
       #   uses:
