@@ -1,4 +1,4 @@
-name: 'build'
+name: 'Github Actions For Compiling cpp files and Checking if they are can pass test cases'
 on: # rebuild any PRs and main branch changes
   pull_request:
   push:
@@ -6,7 +6,7 @@ on: # rebuild any PRs and main branch changes
       - main
 
 jobs:
-  build:
+  get-changed-files:
     runs-on: ubuntu-latest
     outputs:
       changed_files: ${{ steps.changed-files.outputs.all_changed_files }}
@@ -27,11 +27,14 @@ jobs:
           files_separator: "\n"
       - name: Output changed files
         run: echo ${{ steps.changed-files.outputs.all_changed_files }}
+        # TODO: 仮組みできたら、「変更ファイルを取得する」ジョブ、「DevContainerを立ち上げ & コンパイル、atestする」ジョブに分ける
       - name: Build and run dev container task
         uses: devcontainers/ci@v0.3
         with:
           # Change this to be your CI task/script
-          runCmd: echo "Hello"
+          run: cd $(dirname ${{ steps.changed-files.outputs.all_changed_files }})
+      # - name: Compiling cpp files and Checking if they are can pass test cases
+      #   uses:
 
 # name: C/C++ CI
 
