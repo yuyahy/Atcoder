@@ -23,7 +23,7 @@ jobs:
         # パスに関係なく変更があったcppファイルのパスを取得する
         with:
           files: |
-            **.{cpp}
+            **.cpp
           files_separator: "\n"
       - name: Output changed files
         run: echo ${{ steps.changed-files.outputs.all_changed_files }}
