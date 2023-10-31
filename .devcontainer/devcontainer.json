@@ -12,9 +12,16 @@
 		"ms-vscode.cpptools",
 		"ms-vscode.cpptools-extension-pack"
 	],
-	"postAttachCommand": "bash ./.devcontainer/postAttachCommand.sh"
+	"postAttachCommand": "bash ./.devcontainer/postAttachCommand.sh",
 	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+	"features": {
+		"docker-from-docker": {
+			"version": "latest"
+		}
+	},
+	"remoteEnv": {
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+	}
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Uncomment the next line to run commands after the container is created.
