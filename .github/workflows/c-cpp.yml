@@ -32,7 +32,8 @@ jobs:
         uses: devcontainers/ci@v0.3
         with:
           # Change this to be your CI task/script
-          run: cd $(dirname ${{ steps.changed-files.outputs.all_changed_files }})
+          run: ls
+          working-directory: $(dirname ${{ steps.changed-files.outputs.all_changed_files }})
       # - name: Compiling cpp files and Checking if they are can pass test cases
       #   uses:
 
