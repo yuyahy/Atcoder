@@ -38,6 +38,7 @@ jobs:
             echo $(dirname ${WORKSPACE_PATH}${{ steps.changed-files.outputs.all_changed_files }})
             cd $(dirname ${WORKSPACE_PATH}${{ steps.changed-files.outputs.all_changed_files }})
             ls
+            pwd
           env: |
             WORKSPACE_PATH
       # - name: Compiling cpp files and Checking if they are can pass test cases
