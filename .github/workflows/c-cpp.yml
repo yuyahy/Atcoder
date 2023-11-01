@@ -33,7 +33,8 @@ jobs:
         env:
           WORKSPACE_PATH: /workspaces/Atcoder/
         with:
-          # Change this to be your CI task/script
+          # TODO: atestのaliasが有効になっていない件の確認
+          # TODO: テストケース用のファイルを取得する必要あり(ただし普通に取得するとmain.cppが上書きされてしまうかも)
           runCmd: |
             echo $(dirname ${WORKSPACE_PATH}${{ steps.changed-files.outputs.all_changed_files }})
             cd $(dirname ${WORKSPACE_PATH}${{ steps.changed-files.outputs.all_changed_files }})
