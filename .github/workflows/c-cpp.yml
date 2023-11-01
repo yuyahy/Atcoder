@@ -39,7 +39,7 @@ jobs:
         env:
           WORKSPACE_PATH: /workspaces/Atcoder/
         with:
-          imageName: ghcr.io/yuyahy/Atcoder-devcontainer
+          imageName: ghcr.io/yuyahy/atcoder-devcontainer
           # TODO: atestのaliasが有効になっていない件の確認
           # TODO: テストケース用のファイルを取得する必要あり(ただし普通に取得するとmain.cppが上書きされてしまうかも)
           runCmd: |
