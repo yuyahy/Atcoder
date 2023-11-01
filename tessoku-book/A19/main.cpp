@@ -56,5 +56,6 @@ int main() {
   for (int i = 0; i <= W; i++) {
     max = std::max(max, DP[N][i]);
   }
+  // Github Actionsのテスト
   cout << max << endl;
 }
