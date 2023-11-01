@@ -1,4 +1,4 @@
-name: 'Github Actions For Compiling cpp files and Checking if they are can pass test cases'
+name: "Github Actions For Compiling cpp files and Checking if they are can pass test cases"
 on: # rebuild any PRs and main branch changes
   pull_request:
   push:
@@ -38,6 +38,11 @@ jobs:
       contents: read
       packages: write
     steps:
+      - name: Checkout (GitHub)
+        uses: actions/checkout@v3
+        # tj-actions/changed-filesを動作させるために指定している
+        with:
+          fetch-depth: 0
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
