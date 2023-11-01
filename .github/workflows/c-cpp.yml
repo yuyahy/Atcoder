@@ -28,6 +28,7 @@ jobs:
       - name: Output changed files
         run: echo ${{ steps.changed-files.outputs.all_changed_files }}
         # TODO: 仮組みできたら、「変更ファイルを取得する」ジョブ、「DevContainerを立ち上げ & コンパイル、atestする」ジョブに分ける
+        # TODO: コンテナのキャッシュ
       - name: Build and run dev container task
         uses: devcontainers/ci@v0.3
         env:
@@ -38,11 +39,10 @@ jobs:
           runCmd: |
             for i in ${{ steps.changed-files.outputs.all_changed_files }}; do
               echo $i
+              cd $(dirname ${WORKSPACE_PATH}$i)
+              ls
+              g++-12  -Wfatal-errors -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal -ftrapv -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover -std=gnu++20 -I /tmp/ac-library main.cpp
             done
-            echo $(dirname ${WORKSPACE_PATH}${{ steps.changed-files.outputs.all_changed_files }})
-            cd $(dirname ${WORKSPACE_PATH}${{ steps.changed-files.outputs.all_changed_files }})
-            ls
-            g++-12  -Wfatal-errors -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal -ftrapv -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover -std=gnu++20 -I /tmp/ac-library main.cpp
           env: |
             WORKSPACE_PATH
       # - name: Compiling cpp files and Checking if they are can pass test cases
