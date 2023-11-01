@@ -38,6 +38,9 @@ jobs:
         uses: devcontainers/ci@v0.3
         env:
           WORKSPACE_PATH: /workspaces/Atcoder/
+        permissions:
+          contents: read
+          packages: write
         with:
           imageName: ghcr.io/yuyahy/atcoder-devcontainer
           # TODO: atestのaliasが有効になっていない件の確認
