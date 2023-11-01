@@ -11,6 +11,9 @@ jobs:
     outputs:
       changed_files: ${{ steps.changed-files.outputs.all_changed_files }}
       any_changed: ${{ steps.changed-files.outputs.any_changed }}
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout (GitHub)
         uses: actions/checkout@v3
@@ -38,9 +41,6 @@ jobs:
         uses: devcontainers/ci@v0.3
         env:
           WORKSPACE_PATH: /workspaces/Atcoder/
-        permissions:
-          contents: read
-          packages: write
         with:
           imageName: ghcr.io/yuyahy/atcoder-devcontainer
           # TODO: atestのaliasが有効になっていない件の確認
