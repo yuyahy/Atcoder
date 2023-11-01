@@ -36,6 +36,9 @@ jobs:
           # TODO: atestのaliasが有効になっていない件の確認
           # TODO: テストケース用のファイルを取得する必要あり(ただし普通に取得するとmain.cppが上書きされてしまうかも)
           runCmd: |
+            for i in ${{ steps.changed-files.outputs.all_changed_files }}; do
+              echo $i
+            done
             echo $(dirname ${WORKSPACE_PATH}${{ steps.changed-files.outputs.all_changed_files }})
             cd $(dirname ${WORKSPACE_PATH}${{ steps.changed-files.outputs.all_changed_files }})
             ls
