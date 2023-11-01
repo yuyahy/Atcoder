@@ -44,7 +44,6 @@ jobs:
         with:
           imageName: ghcr.io/yuyahy/atcoder-devcontainer
           # TODO: atestのaliasが有効になっていない件の確認
-          # TODO: テストケース用のファイルを取得する必要あり(ただし普通に取得するとmain.cppが上書きされてしまうかも)
           runCmd: |
             for i in ${{ steps.changed-files.outputs.all_changed_files }}; do
               echo $i
@@ -54,29 +53,3 @@ jobs:
             done
           env: |
             WORKSPACE_PATH
-      # - name: Compiling cpp files and Checking if they are can pass test cases
-      #   uses:
-
-# name: C/C++ CI
-
-# on:
-#   push:
-#     branches: [ "main" ]
-#   pull_request:
-#     branches: [ "main" ]
-
-# jobs:
-#   build:
-
-#     runs-on: ubuntu-latest
-
-#     steps:
-#     - uses: actions/checkout@v3
-#     - name: configure
-#       run: ./configure
-#     - name: make
-#       run: make
-#     - name: make check
-#       run: make check
-#     - name: make distcheck
-#       run: make distcheck

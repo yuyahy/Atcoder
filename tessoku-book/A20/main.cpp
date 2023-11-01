@@ -43,6 +43,5 @@ int main() {
     }
   }
   dump(DP);
-  // Github Actionsのテスト
-  aaa cout << DP[S.length()][T.length()] << endl;
+  cout << DP[S.length()][T.length()] << endl;
 }
