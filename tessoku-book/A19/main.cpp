@@ -57,5 +57,5 @@ int main() {
     max = std::max(max, DP[N][i]);
   }
   // Github Actionsのテスト
-  cout << max << endl;
+  aaa cout << max << endl;
 }
