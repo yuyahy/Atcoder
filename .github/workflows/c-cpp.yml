@@ -28,12 +28,18 @@ jobs:
       - name: Output changed files
         run: echo ${{ steps.changed-files.outputs.all_changed_files }}
         # TODO: 仮組みできたら、「変更ファイルを取得する」ジョブ、「DevContainerを立ち上げ & コンパイル、atestする」ジョブに分ける
-        # TODO: コンテナのキャッシュ
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and run dev container task
         uses: devcontainers/ci@v0.3
         env:
           WORKSPACE_PATH: /workspaces/Atcoder/
         with:
+          imageName: ghcr.io/yuyahy/Atcoder-devcontainer
           # TODO: atestのaliasが有効になっていない件の確認
           # TODO: テストケース用のファイルを取得する必要あり(ただし普通に取得するとmain.cppが上書きされてしまうかも)
           runCmd: |
