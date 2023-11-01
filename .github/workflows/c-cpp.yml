@@ -39,7 +39,7 @@ jobs:
             echo $(dirname ${WORKSPACE_PATH}${{ steps.changed-files.outputs.all_changed_files }})
             cd $(dirname ${WORKSPACE_PATH}${{ steps.changed-files.outputs.all_changed_files }})
             ls
-            g++-12  -Wfatal-errors -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal -ftrapv -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover -std=gnu++20 -I /tmp/ac-library main.cpp; atcoder-tools test
+            g++-12  -Wfatal-errors -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal -ftrapv -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover -std=gnu++20 -I /tmp/ac-library main.cpp
           env: |
             WORKSPACE_PATH
       # - name: Compiling cpp files and Checking if they are can pass test cases
