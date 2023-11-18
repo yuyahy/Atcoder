@@ -51,7 +51,7 @@ int main() {
   //               その時点での答えが解答となる
 
   // 演算を10進数(掛け算割り算)で統一したバージョン
-  bool b_calc_digit(false);
+  bool b_calc_digit(true);
   while (b_calc_digit && b) {
     // 10進数表現で2で割り切れるかチェック
     // 割り切れなければ、bが2進数表現で1桁目(最右)がビットが立っている事がわかる
@@ -59,7 +59,6 @@ int main() {
       ans *= a % DIV;
       ans %= DIV;
     }
-    // ループの度に、a^2、a^4、a^8...となっていく
     a *= (a % DIV);
     a %= DIV;
     // 左シフトする
@@ -67,24 +66,26 @@ int main() {
     b /= 2;
   }
 
+  // ※こちらの解法はbの桁数が大きく、1<<N の計算でエラーになった
   // 演算を2進数(ビット演算)で統一したバージョン
   // bのN桁目
-  ll N(0);
-  // bを2進数で表現した時の桁数を求める
-  int binary_digit_num(0);
-  binary_digit_num = log2(b);
-  dump(binary_digit_num);
-  while (!b_calc_digit && N != binary_digit_num + 1) {
-    // N桁目のビットが立っているかチェック
-    if (b & (1 << N)) {
-      ans *= a % DIV;
-      ans %= DIV;
-    }
-    a *= (a % DIV);
-    a %= DIV;
-    // 探索する桁を1つ左にシフト
-    // 10進数表現で言うところの、2で割る処理に対応する
-    N++;
-  }
+  //   ll N(0);
+  //   // bを2進数で表現した時の桁数を求める
+  //   ll binary_digit_num(0);
+  //   binary_digit_num = log2(b);
+  //   dump(binary_digit_num);
+  //   while (!b_calc_digit && N != binary_digit_num + 1) {
+  //     // N桁目のビットが立っているかチェック
+  //     ll bit = (1 << N);
+  //     if (b & bit) {
+  //       ans *= a % DIV;
+  //       ans %= DIV;
+  //     }
+  //     a *= (a % DIV);
+  //     a %= DIV;
+  //     // 探索する桁を1つ左にシフト
+  //     // 10進数表現で言うところの、2で割る処理に対応する
+  //     N++;
+  //   }
   cout << ans << endl;
 }
