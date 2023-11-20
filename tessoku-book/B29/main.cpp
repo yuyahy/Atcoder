@@ -59,6 +59,7 @@ int main() {
       ans *= a % DIV;
       ans %= DIV;
     }
+    // ループの度に、a^2、a^4、a^8...となっていく
     a *= (a % DIV);
     a %= DIV;
     // 左シフトする
