@@ -21,7 +21,9 @@ RUN python -m pip install markupsafe==2.0.1
 # agenlogin tessoku-book --workspace /workspaces/atcoder
 RUN echo 'asub="atcoder-tools submit -f -u"'
 # TODO コンパイルオプションを増やす or makefileにする
-RUN echo 'alias atest_sub="g++-12 -g -Wfatal-errors -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal -ftrapv -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover -std=gnu++20 -I /tmp/ac-library main.cpp; atcoder-tools test"' >> /root/.bashrc
+#RUN echo 'alias atest_sub="g++-12 -g -Wfatal-errors -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal -ftrapv -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover -std=gnu++20 -I /tmp/ac-library main.cpp; atcoder-tools test"' >> /root/.bashrc
+# コンパイルオプションマシマシだと、ローカルでTLEになるが、Atcoder上でコンパイルすると成功するケースがあったため、提出用のコンパイルオプションを変更
+RUN echo 'alias atest_sub="g++-12 -std=gnu++20 -O2 -Wall -Wextra -mtune=native -march=native -fconstexpr-depth=2147483647 -fconstexpr-loop-limit=2147483647 -fconstexpr-ops-limit=2147483647 -I/tmp/ac-library main.cpp -D DEFINED_ONLY_IN_LOCAL; atcoder-tools test"' >> /root/.bashrc
 RUN echo 'alias atest="g++-12 -g -Wfatal-errors -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal -ftrapv -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover -std=gnu++20 -I /tmp/ac-library main.cpp -D DEFINED_ONLY_IN_LOCAL; atcoder-tools test"' >> /root/.bashrc
 RUN echo 'alias agen="atcoder-tools gen --without-login --workspace=/workspaces/atcoder --template /workspaces/atcoder/my_template.cpp"' >> /root/.bashrc
 RUN echo 'alias agenlogin="atcoder-tools gen --workspace /workspaces/atcoder --template /workspaces/atcoder/my_template.cpp"' >> /root/.bashrc

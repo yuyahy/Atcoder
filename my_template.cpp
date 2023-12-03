@@ -17,6 +17,24 @@ using namespace std;
 typedef long long ll;
 typedef pair<int, int> pii;
 
+// nCk、組み合わせを求める関数
+//
+// usage:
+// vector<vector<ll> > v(n + 1, vector<ll>(n + 1, 0));
+// comb(v);
+// v[n][k]が求めるnCkの値
+void comb(vector<vector<ll> >& v) {
+  for (ll i = 0; i < v.size(); i++) {
+    v[i][0] = 1;
+    v[i][i] = 1;
+  }
+  for (ll k = 1; k < v.size(); k++) {
+    for (ll j = 1; j < k; j++) {
+      v[k][j] = (v[k - 1][j - 1] + v[k - 1][j]);
+    }
+  }
+}
+
 // mint
 using mint = static_modint<1000000007>;
 // ll int
