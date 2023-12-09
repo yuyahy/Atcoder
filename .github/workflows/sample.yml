@@ -3,15 +3,19 @@ on:
   workflow_dispatch:
 
 jobs:
+  # 文字列を送信
   send-string:
     runs-on: ubuntu-latest
     outputs:
       send-string: ${{ steps.send-string.outputs.send-string }}
     steps:
-      - name: Output changed files
+      - name: Send string
         id: send-string
         run: echo "send-string=${{ secrets.MASK_TEST  }}" >> $GITHUB_OUTPUT
+      - name: Display string
+        run: echo "${{ secrets.MASK_TEST  }}"
 
+  # 文字列を受信し、出力する
   receive-string:
     runs-on: ubuntu-latest
     needs: send-string
