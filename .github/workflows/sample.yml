@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Output changed files
         id: send-string
-        run: echo "send-string=X32525DNCSA" >> $GITHUB_OUTPUT
+        run: echo "send-string=${{ secrets.MASK_TEST  }}" >> $GITHUB_OUTPUT
 
   receive-string:
     runs-on: ubuntu-latest
