@@ -17,4 +17,4 @@ jobs:
     needs: send-string
     steps:
       - name: Display receive string
-        run: echo ${{ needs.job1.outputs.send-string }}
+        run: echo ${{ needs.send-string.outputs.send-string }}
