@@ -24,11 +24,11 @@ typedef pair<int, int> pii;
 // comb(v);
 // v[n][k]が求めるnCkの値
 void comb(vector<vector<ll> >& v) {
-  for (ll i = 0; i < v.size(); i++) {
+  for (ll i = 0; i < (ll)v.size(); i++) {
     v[i][0] = 1;
     v[i][i] = 1;
   }
-  for (ll k = 1; k < v.size(); k++) {
+  for (ll k = 1; k < (ll)v.size(); k++) {
     for (ll j = 1; j < k; j++) {
       v[k][j] = (v[k - 1][j - 1] + v[k - 1][j]);
     }
