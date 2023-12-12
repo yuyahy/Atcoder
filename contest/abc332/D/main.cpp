@@ -64,91 +64,69 @@ int main() {
   dump(A);
   dump(B);
 
-  // Aの行iを構成する数字と、同じ数字を持つ行がBにないと絶対に作れない
-  // 同様にAの列iを構成する数字と、同じ数字を持つ列がBにないと絶対に作れない
+  // ポイント1
+  // 現在の並びを以下の方法で表現する
+  // ・初期状態でi列目にあった列が今何列目に存在するか
+  // ・初期状態でi行目にあった行が今何行目に存在するか
+  // これは本問題の制約より、最大でも5!×5!=14400通りしか存在しないため使える
 
-  // Bの対応インデックスの4近傍を調べればOKかも→隣り合った行と列しか入れ替えられないので
-  //
-  bool bCanConvert(true);
-  int cost(0);
+  // ポイント2
+  // 一般に、数列[1, 2, ...N]を隣接する2項を入れ替えて、ある順列A=[A1, A2,
+  // ...An]に 並び替えるための最小操作回数は順列Aの転倒数に等しい
+  // ※転倒数→配列の左から順番に、「自分より左にいるのに自分より大きい数」の個数を足していった時の総和
 
-  // TODO: 行と列ごとに何行 or 列移動するかをチェックしていく
+  // 1.縦横の各順列のパターンについて以下を行う
+  // 2-1.グリッドBに等しくなければcontinue
+  // 2-2.グリッドBに等しければ、初期状態AからBに変形するための最小操作回数を求める
+  // 3.最小回数が求まっていれば出力、一個もグリッドBに等しくなければ-1を出力
+
+  vector<ll> P(H, 0);
+  vector<ll> Q(W, 0);
   for (int i = 0; i < H; i++) {
-    // 左右 or 上下の場合は1手で同じ形にできる
-    // 斜めの場合は2手で同じインデックスにできる
-
-    // 行ごとに何行ずらす必要があるかをチェックする
-    std::set<ll> col_A(A[i].begin(), A[i].end());
-    auto sameCol_B(B[i].begin(), B[i].end());
-    auto nextCol_B(B[i + 1].begin(), B[i + 1].end());
-    if (col_A == sameCol_B) {
-      int aa;
-    } else if (col_A == nextCol_B) {
-      cost++;
-      swap(A[i], A[i + 1]);
-    } else {
-      bCanConvert = false;
-      break;
-    }
+    P[i] = i;
   }
-}
-
-for (int i = 0; i < W; i++) {
-  // 左右 or 上下の場合は1手で同じ形にできる
-  // 斜めの場合は2手で同じインデックスにできる
-  std::set<ll> row_A;
-  for (int j = 0; j < H; j++) {
-    row_A.insert(A[j][i]);
+  for (int i = 0; i < W; i++) {
+    Q[i] = i;
   }
-  // 列ごとに何列ずらす必要があるかをチェックする
-  auto sameCol_B(B[i].begin(), B[i].end());
-  auto nextCol_B(B[i + 1].begin(), B[i + 1].end());
-  if (col_A == sameCol_B) {
-    int aa;
-  } else if (col_A == nextCol_B) {
-    cost++;
-  } else {
-    bCanConvert = false;
-    break;
-  }
-}
 
-//   bool bColSame(true);
-//   for (int i = 0; i < H; i++) {
-//     bool bFind(false);
-//     std::set<ll> col_A(A[i].begin(), A[i].end());
-//     // for (int j = 0; j < W; j++) {
-//     // }
-//     dump(col_A);
-//     for (int j = 0; j < H; j++) {
-//       std::set<ll> col_B(B[i].begin(), B[i].end());
-//       if (col_A == col_B) {
-//         bFind = true;
-//         break;
-//       }
-//     }
-//     bColSame &= bFind;
-//   }
-//   bool bRowSame(true);
-//   for (int i = 0; i < W; i++) {
-//     bool bFind(false);
-//     std::set<ll> row_A;
-//     for (int j = 0; j < H; j++) {
-//       row_A.insert(A[j][i]);
-//     }
-//     dump(row_A);
-//     for (int k = 0; k < W; k++) {
-//       std::set<ll> row_B;
-//       for (int l = 0; l < H; l++) {
-//         row_B.insert(A[l][k]);
-//       }
-//       if (row_A == row_B) {
-//         bFind = true;
-//         break;
-//       }
-//     }
-//     bRowSame &= bFind;
-//   }
-//   dump(bColSame);
-//   dump(bRowSame);
+  dump(P);
+  dump(Q);
+
+  int min(1e8);
+  do {
+    do {
+      bool bSameGrid(true);
+      // 並び替えた順列がグリッドBと完全一致しているかチェック
+      for (int i = 0; i < H; i++) {
+        for (int j = 0; j < W; j++) {
+          if (A[P[i]][Q[j]] != B[i][j]) {
+            bSameGrid = false;
+            break;
+          }
+        }
+      }
+      if (!bSameGrid) continue;
+      // 変形したグリッドAとグリッドBが等しい場合は、A→Bに変形するための最小操作回数を求める
+      // これは縦と横の順列の転倒数の和に等しい
+      int inv_num_P(0), inv_num_Q(0);
+      // 転倒数を計算するためのラムダ式
+      // ※転倒数→配列の左から順番に、「自分より左にいるのに自分より大きい数」の個数を足していった時の総和
+      auto calc_inv_num = [](const int size, const auto& array) {
+        auto result(0);
+        for (int i = 0; i < size - 1; i++) {
+          for (int j = i + 1; j < size; j++) {
+            if (array[i] > array[j]) result++;
+          }
+        }
+        return result;
+      };
+      inv_num_P = calc_inv_num(H, P);
+      inv_num_Q = calc_inv_num(W, Q);
+      min = std::min(min, inv_num_P + inv_num_Q);
+      // Note:next_permutationするためには、初期状態を昇順でソートしておく必要あり
+    } while (std::next_permutation(Q.begin(), Q.end()));
+  } while (std::next_permutation(P.begin(), P.end()));
+
+  auto result = min == (int)1e8 ? -1 : min;
+  cout << result << endl;
 }
