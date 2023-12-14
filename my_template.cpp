@@ -1,3 +1,4 @@
+// TODO: マクロや共通関数は別ファイルに定義し、埋め込む様にする
 // デバッグ用関数の設定
 #ifdef DEFINED_ONLY_IN_LOCAL
 #include </workspaces/atcoder/cpp-dump/dump.hpp>
@@ -6,6 +7,11 @@
 #define dump(...)
 #define CPP_DUMP_DEFINE_EXPORT_OBJECT(...)
 #endif
+
+#define REP(i, n) for (int i = 0; (i) < (int)(n); ++(i))
+#define REP3(i, m, n) for (int i = (m); (i) < (int)(n); ++(i))
+#define REP_R(i, n) for (int i = (int)(n)-1; (i) >= 0; --(i))
+#define REP3R(i, m, n) for (int i = (int)(n)-1; (i) >= (int)(m); --(i))
 
 #include <bits/stdc++.h>
 
