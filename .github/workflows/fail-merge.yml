@@ -1,0 +1,30 @@
+name: "Fail merging test"
+on:
+  workflow_dispatch:
+
+jobs:
+  send-string:
+    runs-on: ubuntu-latest
+    outputs:
+      send-string: ${{ steps.send-string.outputs.send-string }}
+    steps:
+      - name: Checkout (GitHub)
+        uses: actions/checkout@v3
+        # with:
+        #   fetch-depth: 0
+      - name: Create release branch
+        run: |
+          git fetch
+          git checkout develop
+          git checkout -b release-sample develop
+      - name: Create Changes
+        run: |
+          echo hogehoge >> sample.md
+      - name: Commit changes and merge
+        run: |
+          git add sample.md
+          git commit -m "This is failure merging sample"
+          git checkout develop
+          git merge release-sample
+          git checkout main
+          git merge release-sample
