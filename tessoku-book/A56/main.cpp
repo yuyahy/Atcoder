@@ -25,47 +25,45 @@ using mint = static_modint<1000000007>;
 // ll int
 ll INF = numeric_limits<ll>::max() / 2;
 
-// class RollingHash {
-//  private:
-//   vector<int> m_digit_string;
+// 動的にmodintの型を決める事ができるか不明なので、一旦定数にする
+constexpr int mod = INT_MAX;
+using mint_hash = static_modint<mod>;
+class RollingHash {
+ public:
+  RollingHash(const string& str, const ll N, const ll hash_base)
+      : m_digit_string(N + 1), m_hash(N + 1), m_hash_base_powers(N + 1) {
+    // 入力文字列のi番目の文字をcharからintに変換
+    // 0になると和差の計算上はあってもなくても変わらなくなってしまうので、
+    // a=1, b=2,...z=26と対応させる
+    // m_digit_string(N + 1, 0);
+    REP3(i, 1, N + 1) m_digit_string[i] = (str[i - 1] - 'a') + 1;
+    // 後の計算のためにB^iを前計算
+    m_hash_base_powers[0] = 1;
+    REP3(i, 1, N + 1) {
+      m_hash_base_powers[i] = m_hash_base_powers[i - 1] * hash_base;
+    }
+    // Hash(S[1,1]),Hash(S[1,2]),...Hash(S[1,N])を前計算
+    //   ここで、文字列S[1,i]はS[1,i-1]の後にT[i]を足した物なので、
+    // Hash(S[1,i]) = B*Hash(S[i,i-1])+T[i]
+    // ※ここで、B=B進法、T[i]=アルファベットのi番目を整数で表現した値
+    // vector<mint_hash> hash(N + 1, 0);
+    REP3(i, 1, N + 1) {
+      m_hash[i] = (hash_base * m_hash[i - 1]) + m_digit_string[i];
+    }
+  }
+  mint_hash calc_hash(const ll l, const ll r) {
+    // 指定区間[l,r]から文字列str[l,r]の部分のハッシュ値を求める
+    return m_hash[r] - (m_hash_base_powers[r - l + 1] * m_hash[l - 1]);
+  }
 
-// }
-
-// // TODO:クラスにまとめた方が良いかも
-// //      それぞれ必要な配列はメンバで保持する
-// //      部分文字列のハッシュ値はメンバ関数で返す
-// auto calc_rolling_hash(const string& str, const int N, const int hash_base,
-//                        const int mod) {
-//   // 入力文字列のi番目の文字をcharからintに変換
-//   // 0になると和差の計算上はあってもなくても変わらなくなってしまうので、
-//   // a=1, b=2,...z=26と対応させる
-//   vector<int> digit_string(N + 1, 0);
-//   REP3(i, 1, N + 1) digit_string[i] = (str[i - 1] - 'a') + 1;
-//   // 後の計算のためにB^iを前計算
-//   using mint_hash = static_modint<mod>;
-//   vector<mint_hash> hash_base_powers(N + 1, 0);
-//   hash_base_powers[0] = 1;
-//   REP3(i, 1, N + 1) {
-//     dump(hash_base_powers[i - 1].val());
-//     hash_base_powers[i] = hash_base_powers[i - 1] * hash_base;
-//   }
-
-//   // Hash(S[1,1]),Hash(S[1,2]),...Hash(S[1,N])を前計算
-//   //   ここで、文字列S[1,i]はS[1,i-1]の後にT[i]を足した物なので、
-//   // Hash(S[1,i]) = B*Hash(S[i,i-1])+T[i]
-//   // ※ここで、B=B進法、T[i]=アルファベットのi番目を整数で表現した値
-//   vector<mint_hash> hash(N + 1, 0);
-//   REP3(i, 1, N + 1) hash[i] = (hash_base * hash[i - 1]) + digit_string[i];
-
-//   for (const auto& elem : hash) dump(elem.val());
-//   for (const auto& elem2 : hash_base_powers) dump(elem2.val());
-
-//   // 指定区間[l,r]から文字列str[l,r]の部分のハッシュ値を求める
-//   // ・Hash(S[l,r]) = Hash(S[1,r])-B^(r-l+1)*Hash(S[1,l-1])
-//   auto calc_hash = [&](const ll l, const ll r) {
-//     return hash[r] - (hash_base_powers[r - l + 1] * hash[l - 1]);
-//   };
-// }
+ private:
+  // 入力文字列を1アルファベットごとに数字で表現した配列
+  vector<ll> m_digit_string;
+  // Hash(S[1,1]),Hash(S[1,2]),...Hash(S[1,N])のハッシュ値
+  vector<mint_hash> m_hash;
+  // B進法のB^iを計算した結果を保持する配列
+  vector<mint_hash> m_hash_base_powers;
+};
 
 int main() {
   // set precision (10 digit)
@@ -93,47 +91,14 @@ int main() {
   // ・Hash(S[l,r]) = Hash(S[1,r])-Hash(S[1,l])
   // →累積和系のアイデアに似ている
 
-  // ハッシュ化に用いる基数
   constexpr int hash_base = 100;
-  constexpr int mod = INT_MAX;
-
-  // 入力文字列のi番目の文字をcharからintに変換
-  // 0になると和差の計算上はあってもなくても変わらなくなってしまうので、
-  // a=1, b=2,...z=26と対応させる
-  vector<int> digit_string(N + 1, 0);
-  REP3(i, 1, N + 1) digit_string[i] = (str[i - 1] - 'a') + 1;
-
-  // 後の計算のためにB^iを前計算
-  using mint_hash = static_modint<mod>;
-  vector<mint_hash> hash_base_powers(N + 1, 0);
-  hash_base_powers[0] = 1;
-  REP3(i, 1, N + 1) {
-    dump(hash_base_powers[i - 1].val());
-    hash_base_powers[i] = hash_base_powers[i - 1] * hash_base;
-  }
-
-  // Hash(S[1,1]),Hash(S[1,2]),...Hash(S[1,N])を前計算
-  //   ここで、文字列S[1,i]はS[1,i-1]の後にT[i]を足した物なので、
-  // Hash(S[1,i]) = B*Hash(S[i,i-1])+T[i]
-  // ※ここで、B=B進法、T[i]=アルファベットのi番目を整数で表現した値
-  vector<mint_hash> hash(N + 1, 0);
-  REP3(i, 1, N + 1) hash[i] = (hash_base * hash[i - 1]) + digit_string[i];
-
-  for (const auto& elem : hash) dump(elem.val());
-  for (const auto& elem2 : hash_base_powers) dump(elem2.val());
-
-  // 指定区間[l,r]から文字列str[l,r]の部分のハッシュ値を求める
-  // ・Hash(S[l,r]) = Hash(S[1,r])-B^(r-l+1)*Hash(S[1,l-1])
-  auto calc_hash = [&](const ll l, const ll r) {
-    return hash[r] - (hash_base_powers[r - l + 1] * hash[l - 1]);
-  };
-
+  auto rolling_hash = RollingHash(str, N, hash_base);
   // 各クエリに対して事前計算したハッシュを求めてO(1)で解答する
   ll a(0), b(0), c(0), d(0);
   REP(i, Q) {
     cin >> a >> b >> c >> d;
-    auto hash1 = calc_hash(a, b);
-    auto hash2 = calc_hash(c, d);
+    auto hash1 = rolling_hash.calc_hash(a, b);
+    auto hash2 = rolling_hash.calc_hash(c, d);
     auto result = hash1.val() == hash2.val() ? "Yes" : "No";
     cout << result << endl;
   }
