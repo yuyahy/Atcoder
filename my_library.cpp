@@ -33,12 +33,9 @@ class RollingHash {
     /**
      * @brief Construct a new Rolling Hash object
      *
-     * @param str
-     *        RollingHash対象の文字列
-     * @param N
-     *        strの文字列長(おそらくリファクタリングすれば引数にしなくても、str.lengh()から取れる値でいける)
-     * @param hash_base
-     *        ハッシュ値を計算する際のB進法の値
+     * @param str RollingHash対象の文字列
+     * @param N strの文字列長(おそらくリファクタリングすれば引数にしなくても、str.lengh()から取れる値でいける)
+     * @param hash_base ハッシュ値を計算する際のB進法の値
      *
      * @todo
      *        ハッシュ衝突のケア(B、Mは乱数にしないといけない？)
@@ -67,10 +64,8 @@ class RollingHash {
     /**
      * @brief 指定区間[l,r]から文字列str[l,r]の部分のハッシュ値を求める
      *
-     * @param l
-     *        部分文字列の先頭インデックス(閉区間、インデックスは1スタートなので注意)
-     * @param r
-     *        部分文字列の末端インデックス(閉区間、インデックスは1スタートなので注意)
+     * @param l 部分文字列の先頭インデックス(閉区間、インデックスは1スタートなので注意)
+     * @param r 部分文字列の末端インデックス(閉区間、インデックスは1スタートなので注意)
      * @return mint_hash
      */
     mint_hash calc_hash(const ll l, const ll r) {
@@ -86,3 +81,30 @@ class RollingHash {
     // B進法のB^iを計算した結果を保持する配列
     vector<mint_hash> m_hash_base_powers;
 };
+
+/**
+ * @brief [x/m]の床関数(xを超えない最大の整数を求める)
+ *
+ * @param x
+ * @param m
+ * @return ll
+ *
+ * @note 負の整数の商を求める際に役に立つ
+ *          e.g. C++の組み込みとの比較
+ *          ・ll(-7 / 3) => -2
+ *          ・floor(-7,3) => -3
+ *          C++の組み込みは0に近い方に丸めるが、本関数は負の場合も考慮して求めている(ABC334の解答からコピー)
+ *          数直線や数学的な処理を実装する際に、この関数を使って商を求めると、数学的な床関数としての結果が求めれられる
+ *
+ * https://math.nakaken88.com/textbook/cp-round-down-and-round-up/
+ * https://zenn.dev/fjnkt98/articles/adfd2398b4eeeb
+ *
+ *
+ */
+ll floor(ll x, ll m) {
+    // x を m で割った余りを計算し、m との合同を取ることで非負の余りに変換する
+    ll r = (x % m + m) % m;
+
+    // x から余りを引いて、m で割ることで商を計算する
+    return (x - r) / m;
+}
