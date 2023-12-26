@@ -108,3 +108,35 @@ ll floor(ll x, ll m) {
     // x から余りを引いて、m で割ることで商を計算する
     return (x - r) / m;
 }
+
+// nCk、組み合わせを求める関数
+//
+// usage:
+// vector<vector<ll> > v(n + 1, vector<ll>(n + 1, 0));
+// comb(v);
+// v[n][k]が求めるnCkの値
+void comb(vector<vector<ll> >& v) {
+    for (ll i = 0; i < (ll)v.size(); i++) {
+        v[i][0] = 1;
+        v[i][i] = 1;
+    }
+    for (ll k = 1; k < (ll)v.size(); k++) {
+        for (ll j = 1; j < k; j++) {
+            v[k][j] = (v[k - 1][j - 1] + v[k - 1][j]);
+        }
+    }
+}
+
+/**
+ * @brief 整数numのN桁目のbitが立っているかを判定する
+ *
+ * @param num
+ * @param N
+ * @return true
+ * @return false
+ */
+bool isNthBitSet(int num, int N) {
+    // 1をNビット左シフトして、numとの論理積をとる
+    // 結果が0でなければ、N桁目が立っている
+    return (num & (1 << N)) != 0;
+}
