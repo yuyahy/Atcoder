@@ -140,3 +140,36 @@ bool isNthBitSet(int num, int N) {
     // 結果が0でなければ、N桁目が立っている
     return (num & (1 << N)) != 0;
 }
+
+/**
+ * @brief 入力値の各桁の数字の和を返す
+ *
+ * @param num 今の所、正の整数しか考慮していないので、負の場合は絶対値で渡さないとダメかも
+ * @return ll
+ */
+ll sum_digits(const ll num) {
+    auto tmp = num;
+    ll sum(0);
+    while (tmp) {
+        sum += tmp % 10;
+        tmp /= 10;
+    }
+    return sum;
+}
+
+/**
+ * @brief ダンブリングのK回遷移した結果の値を求める時に使うラムダ式
+ *
+ * @param start 求めたい遷移の初期値
+ * @param num_operation 求めたい遷移の回数(移動回数、操作回数...etc)
+ * @note DP、MAXは参照キャプチャで取っている点に注意
+ * @return ll
+ */
+auto calc_destination = [&](const ll start, const ll num_operation) {
+    ll ans = start;
+    // MAXは問題の制約を満たす様な数字を決めておく必要がある(e.g. 30など)
+    REP_R(i, MAX) {
+        if (isNthBitSet(num_operation, i)) ans = DP[i][ans];
+    }
+    return ans;
+};
