@@ -103,6 +103,9 @@ class SegmentTree {
     vector<ll> m_cells;
 };
 
+ll op(ll x, ll y) { return max({x, y}); }
+ll e() { return 0; }
+
 int main() {
     // set precision (10 digit)
     cout << setprecision(10);
@@ -114,6 +117,8 @@ int main() {
     dump(N);
     dump(Q);
 
+    segtree<ll, op, e> seg(N);  // 長さ N 、要素すべて e で初期化
+
     // Note:
     // クエリ2だけであれば、累積和で解答できるが、今回はクエリ1で特定のインデックスの値が
     // 更新されるため、その都度そのインデックス以降の累積和を計算し直す必要があり、TLEになる。
@@ -123,7 +128,7 @@ int main() {
     // ・特定の区間の最大値や最小値をlog(N)で求められる
     // ・特定のインデックスの更新と、それに伴う最大値 or 最小値の更新がlog(N)で行える
 
-    SegmentTree segtree = SegmentTree(N);
+    // SegmentTree segtree = SegmentTree(N);
 
     ll query(0);
     REP(i, Q) {
@@ -134,14 +139,16 @@ int main() {
             cin >> pos >> value;
             // dump(pos);
             // dump(value);
-            segtree.update(pos, value);
+            // segtree.update(pos, value);
+            seg.set(pos - 1, value);
         } else {
             ll left(-1), right(-1);
             cin >> left >> right;
             // dump(left);
             // dump(right);
-            auto result = segtree.calc_extreme_value(1, left, right, 1,
-                                                     segtree.size() + 1);
+            // auto result = segtree.calc_extreme_value(1, left, right, 1,
+            //                                          segtree.size() + 1);
+            auto result = seg.prod(left - 1, right - 1);
             cout << result << endl;
         }
     }
