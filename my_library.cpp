@@ -158,7 +158,7 @@ ll sum_digits(const ll num) {
 }
 
 /**
- * @brief ダンブリングのK回遷移した結果の値を求める時に使うラムダ式
+ * @brief ダブリングのK回遷移した結果の値を求める時に使うラムダ式
  *
  * @param start 求めたい遷移の初期値
  * @param num_operation 求めたい遷移の回数(移動回数、操作回数...etc)
