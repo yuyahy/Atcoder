@@ -121,6 +121,15 @@ int main() {
     // ただし、上記の方針をそのまま実装すると、この和を求める計算でO(N)かかり、全体としてO(N^2)のままなので、
     // 単純な配列ではなく、セグメント木を使用すると、和を求める計算がO(logN)になり、全体としてO(N*logN)で求められる
 
+    // Note:
+    // 本問題は、先頭から順番に、「自分以降のインデックスの要素で、自分より小さい物がいくつあるか？」という
+    // のがまず思いつくが、これは言い換えると、「自分より前のインデックスの要素で、自分より大きい物がいくつあるか？」という
+    // 風に捉えることもでき、以下の実装はそのアイデアで実装されている。
+    // そして、最初の考え方の場合は、配列の後から逆に探索していき、自分より小さい物をカウントする事で解答できるはず。
+    //
+    // また、ある整数の出現回数を、整数=インデックス、出現回数=配列の該当するインデックスの値と考えるのはよく使う方法なので
+    // 引き出しとして持っておくこと。
+
     int N(0);
     cin >> N;
     vector<int> A(N, 0);
@@ -131,11 +140,26 @@ int main() {
 
     SegmentTree segtree = SegmentTree(N);
 
+    bool b_reverse(true);
+    if (b_reverse) reverse(begin(A), end(A));
+
     // ※ llにしないとWAがでる
     ll sum(0);
     for (const auto& current_A : A) {
+        auto product_begin_idx(-1), product_end_idx(-1);
+        if (b_reverse) {
+            // 今見ているインデックスより後の要素に対して、自分より小さい物をカウントする考え方
+            product_begin_idx = 0;
+            product_end_idx = current_A;
+        } else {
+            //  今見ているインデックスより前の要素に対して、自分より大きい物をカウントする考え方
+            product_begin_idx = current_A;
+            product_end_idx = N;
+        }
+
         // i < jとなる様なjの個数を求める
-        sum += num_encounter.prod(current_A, N);
+        sum += num_encounter.prod(product_begin_idx, product_end_idx);
+
         // 出現をカウントする(今回は[1, N]の順列で同じ整数が複数回出現する事はないので、決め打ちで1で更新しても問題ない想定)
         auto cnt = num_encounter.get(current_A - 1);
         num_encounter.set(current_A - 1, cnt + 1);
