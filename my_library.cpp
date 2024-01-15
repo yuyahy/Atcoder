@@ -131,14 +131,26 @@ void comb(vector<vector<ll> >& v) {
  * @brief 整数numのN桁目のbitが立っているかを判定する
  *
  * @param num
- * @param N
+ * @param N 2進数でのN桁目
  * @return true
  * @return false
  */
 bool isNthBitSet(int num, int N) {
     // 1をNビット左シフトして、numとの論理積をとる
     // 結果が0でなければ、N桁目が立っている
+    // ※N桁目というのは、２進数での桁数である点に注意
+    //  →10進数をチェックする場合は、Nは2進数のbit数にしないといけないABC336 B問題参照
     return (num & (1 << N)) != 0;
+}
+
+/**
+ * @brief int型の数値を2進数表現の文字列に変換
+ *
+ * @param number
+ * @return std::string
+ */
+std::string intToBinaryString(int number) {
+    return std::bitset<sizeof(int) * 8>(number).to_string();
 }
 
 /**
