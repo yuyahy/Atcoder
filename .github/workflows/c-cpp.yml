@@ -61,7 +61,7 @@ jobs:
           imageName: ghcr.io/yuyahy/atcoder-devcontainer
           # TODO: atestのaliasが有効になっていない件の確認
           # TODO: コンパイルオプションをaliasとまとめられないか検討
-          run: |
+          runCmd: |
             for i in ${{ needs.get-changed-files.outputs.changed_files }}; do
               echo $i
               cd $(dirname ${WORKSPACE_PATH}$i)
