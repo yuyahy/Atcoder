@@ -53,7 +53,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and run dev container task
+      - name: Check the changed files are able to be compiled
         uses: devcontainers/ci@v0.3
         env:
           WORKSPACE_PATH: /workspaces/Atcoder/
@@ -61,12 +61,12 @@ jobs:
           imageName: ghcr.io/yuyahy/atcoder-devcontainer
           # TODO: atestのaliasが有効になっていない件の確認
           # TODO: コンパイルオプションをaliasとまとめられないか検討
-          runCmd: |
+          run: |
             for i in ${{ needs.get-changed-files.outputs.changed_files }}; do
               echo $i
               cd $(dirname ${WORKSPACE_PATH}$i)
-              ls
-              g++-12  -Wfatal-errors -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal -ftrapv -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover -std=gnu++20 -I /tmp/ac-library main.cpp
+              ls -la
+              g++-12  -Wfatal-errors -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal -ftrapv -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover -std=gnu++20 -I /tmp/ac-library "$i"
             done
           env: |
             WORKSPACE_PATH
