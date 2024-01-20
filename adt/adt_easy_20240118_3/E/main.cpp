@@ -33,21 +33,44 @@ int main() {
     cout << setprecision(10);
     ll N(0), X(0);
     cin >> N >> X;
-
     ll L(0);
     // 各袋に各整数が何個ずつ入っているか
-    vector<map<ll, ll>> balls(N);
+    vector<vector<ll>> balls(N);
     REP(i, N) {
         cin >> L;
-        // vector<ll> L_balls(L);
         ll tmp(0);
         REP(j, L) {
             cin >> tmp;
-            balls[tmp] += 1;
+            balls[i].push_back(tmp);
         }
     }
 
     dump(balls);
 
-    // cout << num_set.size() << endl;
+    // DFSのためのラムダ関数
+    // →全頂点を探索するのにO(N)、全ての辺を探索するのにO(M)かかるので、全体の計算量はO(N+M)
+    //  ※隣接行列で処理するとO(N^2)になる点に注意
+
+    // Note: グラフ構造だけでなく、この様な多重ループ系の全探索にもDFSは適用できる
+    //       ※袋の個数はパラメータによって異なるため、ネストしたforループは書けないので、DFSを採用するのがポイント
+    auto dfs = [&](auto self, const vector<vector<ll>>& balls, ll product,
+                   int& cnt, int bag) -> void {
+        // [1, N]までのバッグを確認したら、再帰から戻る
+        if (bag == N) {
+            if (product == X) cnt++;
+            return;
+        }
+        // 現在注目しているバッグとそのバッグに入っている玉に対して再帰
+        for (const auto ball : balls[bag]) {
+            if (product > X) continue;
+            self(self, balls, product * ball, cnt, bag + 1);
+        }
+    };
+
+    vector<ll> results;
+    int cnt(0), bag(0);
+    ll product(1);
+    dfs(dfs, balls, product, cnt, bag);
+
+    cout << cnt << endl;
 }
