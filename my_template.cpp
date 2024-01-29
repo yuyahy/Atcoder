@@ -28,6 +28,15 @@ using mint = static_modint<1000000007>;
 // ll int
 ll INF = numeric_limits<ll>::max() / 2;
 
+// 4近傍(左上原点)
+// Y = (↑, そのまま, ↓, そのまま)
+// X = (そのまま, →, そのまま, ←)
+const int dy_4[4] = {-1, 0, 1, 0};
+const int dx_4[4] = {0, 1, 0, -1};
+// 8近傍
+const int dy_8[8] = {-1, -1, 0, 1, 1, 1, 0, -1};
+const int dx_8[8] = {0, 1, 1, 1, 0, -1, -1, -1};
+
 int main() {
     // set precision (10 digit)
     cout << setprecision(10);
