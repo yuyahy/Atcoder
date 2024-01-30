@@ -70,6 +70,7 @@ int main() {
 
     // ダイクストラ法で頂点1からkまでの最短経路長を求める
     // ※ダイクストラ法は辺の重みが非負の場合しか使えない
+    // 計算量はO(MlogM): 全頂点の次数(頂点に接続する辺の数)はそれぞれ2なので、合計2Mになり、優先度付きキューに頂点を追加するのにlogMかかるため
 
     // 優先度付きキューで昇順ソートするための比較関数
     // ※デフォルトが降順なので、大なり小なりの記号の向きに注意する必要がある
@@ -92,6 +93,9 @@ int main() {
     current_min_dist.push({0, 0});
     min_results[0] = 0;
 
+    // <自身の頂点番号, 頂点1からの最短経路で、自身の一個前の頂点の番号>
+    map<ll, ll> route_map;
+
     while (!current_min_dist.empty()) {
         // 探索候補の中で頂点1から距離が最短の物を取り出す
         auto [min_dist, current_vertex] = current_min_dist.top();
@@ -99,7 +103,6 @@ int main() {
         if (is_checked[current_vertex]) continue;
         // 現在注目している頂点の最短距離を確定する
         is_checked[current_vertex] = true;
-
         // 隣接している頂点をチェック
         for (const auto& next_vertex : non_directed_graph[current_vertex]) {
             auto next_vertex_dist = min_results[current_vertex] +
@@ -109,11 +112,22 @@ int main() {
             // 現在注目している頂点に隣接している頂点を次の探索候補として優先度付きキューに追加
             current_min_dist.push({next_vertex_dist, next_vertex});
             min_results[next_vertex] = next_vertex_dist;
+            // 経路を保存
+            route_map[next_vertex] = current_vertex;
         }
     }
 
-    for (const auto& dist : min_results) {
-        if (dist == MAX) cout << -1 << endl;
-        else cout << dist << endl;
+    // 終点から始点までの経路を復元
+    auto current_vertex = N - 1;
+    stack<ll> route;
+    route.push(N);
+    while (current_vertex != 0) {
+        route.push(route_map[current_vertex] + 1);
+        current_vertex = route_map[current_vertex];
     }
+    while (!route.empty()) {
+        cout << route.top() << " ";
+        route.pop();
+    }
+    cout << endl;
 }
