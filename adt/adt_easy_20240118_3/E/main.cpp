@@ -67,10 +67,33 @@ int main() {
         }
     };
 
+    bool b_dfs(false);
     vector<ll> results;
     int cnt(0), bag(0);
     ll product(1);
-    dfs(dfs, balls, product, cnt, bag);
+    if (b_dfs) dfs(dfs, balls, product, cnt, bag);
+    else {
+        // BFSで解いたバージョン
+        // 基本方針はDFSと一緒だが、こちらは再帰の代わりにqueueとwhileで全探索している
+        // →DFSの方が処理は簡潔かもしれない
+        // <現在までの積, 現在注目している袋の番号>
+        queue<pair<ll, ll>> bfs_queue;
+        for (const auto& ball : balls[bag]) bfs_queue.push({ball, bag});
+        while (!bfs_queue.empty()) {
+            auto [current_product, current_bag] = bfs_queue.front();
+            bfs_queue.pop();
+            // 葉のノードまで到達したら、積をチェック
+            if (current_bag == N - 1) {
+                if (current_product == X) cnt++;
+                continue;
+            }
+            for (const auto& ball : balls[current_bag + 1]) {
+                // atest_subだとOKだが、atestだと一部テストケースでオーバーフローの警告エラー発生
+                if (current_product > X) continue;
+                bfs_queue.push({current_product * ball, current_bag + 1});
+            }
+        }
+    }
 
     cout << cnt << endl;
 }
