@@ -43,6 +43,8 @@ int main() {
 
     int A(0), B(0);
     cin >> A >> B;
+    constexpr auto bits = 4;
+    bitset<bits> bin_A(A), bin_B(B);
 
-    cout << (A | B) << endl;
+    cout << (bin_A | bin_B).to_ulong() << endl;
 }
