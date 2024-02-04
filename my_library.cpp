@@ -185,3 +185,32 @@ auto calc_destination = [&](const ll start, const ll num_operation) {
     }
     return ans;
 };
+
+// 4近傍(左上原点)
+// Y = (↑, そのまま, ↓, そのまま)
+// X = (そのまま, →, そのまま, ←)
+const int dy_4[4] = {-1, 0, 1, 0};
+const int dx_4[4] = {0, 1, 0, -1};
+
+/**
+ * @brief グリッド処理などで時計回り or 反時計回り90度回転し、次の方向と移動座標を求める関数
+ *
+ * @param x 現在のx座標→移動先のx座標に更新される
+ * @param y　現在のy座標→移動先のy座標に更新される
+ * @param current_direction 現在の方向(上下左右)→次の方向に更新される
+ * @param b_clockwise 時計回りに回転するか(デフォルト: true)
+ */
+void calc_next_direction(int& x, int& y, int& current_direction,
+                         const bool b_clockwise = true) {
+    if (b_clockwise) {
+        // 時計回りに90度回転
+        current_direction++;
+    } else {
+        // 反時計回りに90度回転
+        current_direction += 3;
+    }
+    // 90度回転した方向と移動先の座標で更新する
+    current_direction %= 4;
+    y += dy_4[current_direction];
+    x += dx_4[current_direction];
+}
