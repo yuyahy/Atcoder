@@ -125,7 +125,8 @@ int main() {
     ll N(0), Q(0);
     cin >> N >> Q;
 
-    // TODO: atcoder libraryのdisjoint setも試してみる
+    bool b_use_atcoder_lib(true);
+    dsu uf(N);
     UnionFind union_find(N);
     ll u(0), v(0), query(0);
     REP(i, Q) {
@@ -134,10 +135,14 @@ int main() {
         v--;
         if (query == 1) {
             // 頂点u, vの間に辺を張る
-            union_find.unite(u, v);
+            if (b_use_atcoder_lib) uf.merge(u, v);
+            else union_find.unite(u, v);
         } else {
             // 頂点u, vが同じ連結成分に属しているかを判定する
-            cout << (union_find.is_same_group(u, v) ? "Yes" : "No") << endl;
+            if (b_use_atcoder_lib)
+                cout << (uf.same(u, v) ? "Yes" : "No") << endl;
+            else
+                cout << (union_find.is_same_group(u, v) ? "Yes" : "No") << endl;
         }
     }
 }
