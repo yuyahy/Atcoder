@@ -68,9 +68,11 @@ int main() {
         p2({starts[1].second, starts[1].first});
     next_position.push({p1, p2});
 
-    // 2人の初期位置(X1, Y1, X2, Y2)からある座標(i, j, i, j)に移動するための最短経路を管理する配列
-    // Note: この考え方が盲点だった。2人が集まれる座標の中で初期位置から最短で行ける所を探せば良い、
-    //       という発送が必要だった。
+    // 2人の初期位置(X1, Y1, X2, Y2)からある座標(i1, j1, i2, j2)に移動するための最短経路を管理する配列
+    // Note:
+    // この考え方が盲点だった。
+    // 2人がそれぞれ初期位置から移動できる座標を列挙し、その中で、
+    // 2人が集まれる座標の内、初期位置から最短で行ける所を探せば良い、という言い換えが必要だった。
     vector<vector<vector<vector<ll>>>> shortest_distance(
         N, vector(N, vector(N, vector(N, INF))));
     shortest_distance[starts[0].second][starts[0].first][starts[1].second]
@@ -129,7 +131,9 @@ int main() {
     dump(shortest_distance);
     ll ans = INF;
     // BFSで初期位置から各座標に集まるための最短経路が全列挙されているはずなので、
-    // その中の最小値の座標が最短経路で2人が集まれる座標である
+    // その中で以下の2つの条件を共に満たすものが答え。
+    // ・2人が集まれる座標である、すなわち(X1, Y1) = (X2, Y2)を満たす
+    // ・初期位置から移動に必要な回数が最小である
     REP(i, N) REP(j, N) ans = min(ans, shortest_distance[i][j][i][j]);
     cout << (ans == INF ? -1 : ans) << endl;
 }
