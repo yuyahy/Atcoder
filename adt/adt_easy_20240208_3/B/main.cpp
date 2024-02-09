@@ -44,12 +44,23 @@ int main() {
     int N(0), K(0), A(0);
     cin >> N >> K >> A;
 
-    int current(A);
-    K--;
-    while (K--) {
-        dump(current);
-        if (current == N) current = 1;
-        else current++;
+    bool b_different_ans(true);
+    if (b_different_ans) {
+        // 人Aから1枚ずつ合計K枚のカードを配り、人Nまで到達したら人1に戻る
+        // つまり、 (A + K -1) を Nで割った余りが答え
+        // ただし余り=0の時はぴったり人Nで配り終えたと解釈する
+        int ans = (A + K - 1) % N;
+        if (!ans) ans = N;
+        cout << ans << endl;
+    } else {
+        // 本番提出解法
+        int current(A);
+        K--;
+        while (K--) {
+            dump(current);
+            if (current == N) current = 1;
+            else current++;
+        }
+        cout << current << endl;
     }
-    cout << current << endl;
 }

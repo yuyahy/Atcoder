@@ -45,16 +45,46 @@ int main() {
     cin >> N;
     vector<int> A(N, 0);
     REP(i, N) cin >> A[i];
-    sort(A.begin(), A.end());
 
-    auto check_num(A[0]);
+    bool b_different_ans(true);
 
-    REP(i, N) {
-        if (check_num != A[i]) {
-            break;
-        } else {
-            check_num++;
+    if (b_different_ans) {
+        // 別解
+        // ソートせずに和の差分から欠けている数を求める
+        // Aの中の最小値をA_minとすると、
+        // ・(落とす前の手持ちの整数の和) = A_min + A_min+1 + A_min_2 + ...A_min+N
+        // から落とした後の手持ちの整数の和を引くと、落とした整数が求められる。
+        // ※A_minを[A_min, A_min+N]までの整数から引くと、[0, N]に変換できるので、これをインデックスとして
+        //  利用し、vector<bool> (手持ちにi番目の整数があるかを管理する配列)に記録していく方針もあり
+        // Note: 最小値はstd::ranges::min(A);で求められる
+
+        // N個探索し総和を求める
+        int A_min(INT_MAX / 2), sum(0);
+        for (const auto& elem : A) {
+            A_min = std::min(A_min, elem);
+            sum += elem;
         }
+        // 1からnまでの整数の和を求めるラムダ式
+        auto calc_sum = [&](const int n) -> int { return n * (n + 1) / 2; };
+        // A_minかAmin+Nまでの和を求める
+        // →(1からAmin+Nまでの和) - (1からAmin-1までの和)
+        int sum_expected = calc_sum(A_min + N) - calc_sum(A_min - 1);
+        dump(sum_expected);
+        cout << sum_expected - sum << endl;
+    } else {
+        // 本番提出解法
+        // 昇順にソートしてから、欠けている数字を探す
+        sort(A.begin(), A.end());
+
+        auto check_num(A[0]);
+
+        REP(i, N) {
+            if (check_num != A[i]) {
+                break;
+            } else {
+                check_num++;
+            }
+        }
+        cout << check_num << endl;
     }
-    cout << check_num << endl;
 }
