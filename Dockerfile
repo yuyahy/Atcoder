@@ -38,27 +38,4 @@ RUN eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 # RUN brew install act
 # RUN curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
 
-# RUN mkdir -p /etc/opt/test
-# COPY test.sh /etc/opt/test/
-# COPY test2.sh /etc/opt/test/
-
-# RUN mkdir -p /etc/sudoers.d/
-# RUN touch /etc/sudoers.d/devcontainer
-
-# # RUN /workspaces/atcoder/test.sh /usr/local/bin/test.sh
-
-# ARG USERNAME=devcontainer
-# ARG USER_UID=1000
-# ARG USER_GID=$USER_UID
-
-# RUN groupadd --gid $USER_GID $USERNAME \
-#     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-#     && apt-get update \
-#     && apt-get install -y sudo \
-#     # && echo "$USERNAME ALL=(ALL) NOPASSWD: ALL, /workspaces/atcoder/test.sh" > /etc/sudoers.d/$USERNAME \
-#     && echo "$USERNAME ALL=(ALL) NOPASSWD: /etc/opt/test/test*.sh" > /etc/sudoers.d/$USERNAME \
-#     && chmod 0440 /etc/sudoers.d/$USERNAME
-
-# USER $USERNAME
-
 CMD ["/bin/bash"]
