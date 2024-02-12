@@ -10,15 +10,23 @@
 	},
 	"extensions": [
 		"ms-vscode.cpptools",
-		"ms-vscode.cpptools-extension-pack"
+		"ms-vscode.cpptools-extension-pack",
+		"cschlosser.doxdocgen",
+		"ms-vscode.cpptools-themes",
+		"mosapride.zenkaku",
+		"oderwat.indent-rainbow",
+		"streetsidesoftware.code-spell-checker",
+		"shardulm94.trailing-spaces",
+		"PKief.material-icon-theme",
+		"Gruntfuggly.todo-tree"
 	],
 	"postAttachCommand": "bash ./.devcontainer/postAttachCommand.sh",
 	// Features to add to the dev container. More info: https://containers.dev/features.
-	"features": {
-		"docker-from-docker": {
-			"version": "latest"
-		}
-	},
+	// "features": {
+	// 	"docker-from-docker": {
+	// 		"version": "latest"
+	// 	}
+	// },
 	"remoteEnv": {
 		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
 	}
