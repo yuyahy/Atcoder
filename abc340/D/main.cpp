@@ -37,41 +37,41 @@ const int dx_4[4] = {0, 1, 0, -1};
 const int dy_8[8] = {-1, -1, 0, 1, 1, 1, 0, -1};
 const int dx_8[8] = {0, 1, 1, 1, 0, -1, -1, -1};
 
+// i番目の頂点からと繋がる辺の情報
+struct Edge {
+    // i番目の頂点とこの辺で結ばれている頂点の番号
+    ll to;
+
+    // 辺のコスト
+    ll cost;
+};
+
 int main() {
     // set precision (10 digit)
     cout << setprecision(10);
 
-    // ステージiにたどりつくまでの最小の秒数を管理するDP
-    // vector<ll> DP(N, 0);
-    //
-
     ll N(0);
     cin >> N;
 
-    // 無向グラフを表現する隣接リスト
-    vector<vector<ll>> stage_graph(N);
-    // 頂点をつなぐ辺の重み
-    map<pair<ll, ll>, ll> edge_weight;
+    // 有向グラフを表現する隣接リスト
+    // Note: 今までは各辺の距離をpairのmapで管理していたが、それだと同じ辺情報が複数でてきた時に、
+    //       最後に入力した情報で上書きされて正しく動作しない事がわかった(本ケースはAとBが同じ辺かつ、違うコストで結ばれる場合がある)。
+    //       よってi番目の入力が識別できる様にEdge構造体で処理する様に変更した。
+    //       ※今後ダイクストラを実装する際はこのコードを参考にすること
+    vector<vector<Edge>> stage_graph(N);
     ll A(0), B(0), X(0);
     REP(i, N - 1) {
         cin >> A >> B >> X;
         dump(i, A, B, X);
-        // A--;
-        // B--;
         X--;
         // ステージ i → i+1
-        stage_graph[i].push_back(i + 1);
-        // stage_graph[i + 1].push_back(i);
-        edge_weight[{i, i + 1}] = A;
-        // edge_weight[{i + 1, i}] = A;
+        Edge edge_i_1 = {i + 1, A};
+        stage_graph[i].push_back(edge_i_1);
         // ステージ i → Xi
-        stage_graph[i].push_back(X);
-        // stage_graph[X].push_back(i);
-        edge_weight[{i, X}] = B;
-        // edge_weight[{X, i}] = B;
+        Edge edge_X_i = {X, B};
+        stage_graph[i].push_back(edge_X_i);
     }
     dump(stage_graph);
-    dump(edge_weight);
 
     // 優先度付きキューで昇順ソートするための比較関数
     // ※デフォルトが降順なので、大なり小なりの記号の向きに注意する必要がある
@@ -88,14 +88,13 @@ int main() {
     // 既に最短距離が確定済みの頂点かの情報を保持するリスト
     vector<bool> is_checked(N, false);
     // <現在注目している頂点の頂点1からの最小距離, 頂点の番号>の優先度付きキュー
-    // priority_queue<pair<ll, ll>, vector<pair<ll, ll>>, decltype(custom_comp)>
-    //     current_min_dist(custom_comp);
-    priority_queue<pair<ll, ll>, vector<pair<ll, ll>>, greater<pair<ll, ll>>>
-        current_min_dist;
+    priority_queue<pair<ll, ll>, vector<pair<ll, ll>>, decltype(custom_comp)>
+        current_min_dist(custom_comp);
+    // 以下の様にstd::greaterでもOK
+    // priority_queue<pair<ll, ll>, vector<pair<ll, ll>>, greater<pair<ll, ll>>>
+    //     current_min_dist;
     current_min_dist.push({0, 0});
     min_results[0] = 0;
-
-    // TODO: 一部のケースでWAになっているので、公式解説を聞いてから再チャレンジ
 
     // ダイクストラ法でステージNへの最短秒数を求める
     while (!current_min_dist.empty()) {
@@ -108,13 +107,13 @@ int main() {
         dump(min_dist, current_vertex);
         // 隣接している頂点をチェック
         for (const auto& next_vertex : stage_graph[current_vertex]) {
-            auto next_vertex_dist = min_results[current_vertex] +
-                                    edge_weight[{current_vertex, next_vertex}];
+            auto next_vertex_dist =
+                min_results[current_vertex] + next_vertex.cost;
             // 最短距離を更新できない場合は以降の処理は不要
-            if (min_results[next_vertex] < next_vertex_dist) continue;
+            if (min_results[next_vertex.to] < next_vertex_dist) continue;
             // 現在注目している頂点に隣接している頂点を次の探索候補として優先度付きキューに追加
-            current_min_dist.push({next_vertex_dist, next_vertex});
-            min_results[next_vertex] = next_vertex_dist;
+            current_min_dist.push({next_vertex_dist, next_vertex.to});
+            min_results[next_vertex.to] = next_vertex_dist;
         }
     }
     dump(is_checked);
