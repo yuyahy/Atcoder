@@ -83,7 +83,7 @@ class RollingHash {
 };
 
 /**
- * @brief [x/m]の床関数(xを超えない最大の整数を求める)
+ * @brief [x/m]の床関数(x/mを超えない最大の整数を求める)
  *
  * @param x
  * @param m
@@ -108,6 +108,16 @@ ll floor(ll x, ll m) {
     // x から余りを引いて、m で割ることで商を計算する
     return (x - r) / m;
 }
+
+/**
+ * @brief [x/m]の天井関数(x/mより大きい整数の中で最小の値を求める)
+ *
+ * @param x
+ * @param m
+ * @return ll
+ * @note 整数同士の除算で天井関数を使いたい場合は本関数を使用するのがベター(ceilは10^15程度までしか正確に扱えない)
+ */
+ll ceil(ll x, ll m) { return (x + m - 1) / m; }
 
 // nCk、組み合わせを求める関数
 //
@@ -214,3 +224,16 @@ void calc_next_direction(int& x, int& y, int& current_direction,
     y += dy_4[current_direction];
     x += dx_4[current_direction];
 }
+
+/**
+ * @brief i番目の頂点からと繋がる辺の情報
+ *
+ * @note ダイクストラ法などで辺の情報を管理するのに使う
+ */
+struct Edge {
+    // i番目の頂点とこの辺で結ばれている頂点の番号
+    ll to;
+
+    // 辺のコスト
+    ll cost;
+};
