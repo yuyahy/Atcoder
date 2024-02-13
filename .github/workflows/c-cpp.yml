@@ -65,6 +65,7 @@ jobs:
             for i in ${{ needs.get-changed-files.outputs.changed_files }}; do
               echo $i
               cd $(dirname ${WORKSPACE_PATH}$i)
+              pwd
               ls -la
               g++-12  -Wfatal-errors -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal -ftrapv -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover -std=gnu++20 -I /tmp/ac-library "$i"
             done

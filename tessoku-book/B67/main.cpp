@@ -84,5 +84,6 @@ int main() {
         union_find.merge(vertex, other_vertex);
         result += shortest_edge;
     }
+
     cout << result << endl;
 }
