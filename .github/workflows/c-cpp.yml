@@ -67,7 +67,7 @@ jobs:
               cd $(dirname ${WORKSPACE_PATH}$i)
               pwd
               ls -la
-              g++-12  -Wfatal-errors -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal -ftrapv -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover -std=gnu++20 -I /tmp/ac-library "$i"
+              g++-12  -Wfatal-errors -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal -ftrapv -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover -std=gnu++20 -I /tmp/ac-library "${WORKSPACE_PATH}$i"
             done
           env: |
             WORKSPACE_PATH
