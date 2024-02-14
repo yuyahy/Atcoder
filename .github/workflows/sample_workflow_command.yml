@@ -6,6 +6,8 @@ jobs:
   test-workflow-commands:
     runs-on: ubuntu-latest
     steps:
+      - name: Masking a string
+      - run: echo "::add-mask::Octocat"
       - name: Output message(debug)
         run: echo "::debug::Set the Octocat variable"
       - name: Output message(notice)
