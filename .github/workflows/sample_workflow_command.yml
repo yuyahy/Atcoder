@@ -14,3 +14,5 @@ jobs:
         run: echo "::warning file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
       - name: Output annotation(error)
         run: echo "::error file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
+      - name: Output annotation(without parameter)
+        run: echo "::error file=,line=,col=,endColumn=::Missing semicolon"
