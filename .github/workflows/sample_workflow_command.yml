@@ -5,14 +5,14 @@ on:
 jobs:
   test-workflow-commands:
     runs-on: ubuntu-latest
-    # outputs:
-    #   send-string: ${{ steps.send-string.outputs.send-string }}
     steps:
-      - name: Output annotation(notice)
+      - name: Output message(debug)
+        run: echo "::debug::Set the Octocat variable""
+      - name: Output message(notice)
         run: echo "::notice file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
-      - name: Output annotation(warning)
+      - name: Output message(warning)
         run: echo "::warning file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
-      - name: Output annotation(error)
+      - name: Output message(error)
         run: echo "::error file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
-      - name: Output annotation(without parameter)
+      - name: Output message(without parameter)
         run: echo "::error file=,line=,col=,endColumn=::Missing semicolon"
