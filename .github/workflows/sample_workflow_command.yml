@@ -6,10 +6,10 @@ jobs:
   test-workflow-commands:
     runs-on: ubuntu-latest
     steps:
-      - name: Masking a string
-        run: echo "::add-mask::Octocat"
       - name: Output message(debug)
         run: echo "::debug::Set the Octocat variable"
+      - name: Masking a string
+        run: echo "::add-mask::Octocat"
       - name: Output message(notice)
         run: echo "::notice file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
       - name: Output message(warning)
