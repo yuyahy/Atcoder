@@ -11,11 +11,15 @@ jobs:
         run: |
           COMMAND_RESUME_TOKEN=$(echo -n ${{ github.token }} | sha256sum | head -c 64)
           echo "gen-token=$COMMAND_RESUME_TOKEN" >> $GITHUB_OUTPUT
+          echo "::stop-commands::${{steps.gen-token.outputs.gen-token}}"
+          echo "::debug::Not stop!!!!!!!!!!!!!!!!"
+          echo "::debug::Not stop yet!!!!!!!!!!!!!!!!"
+          echo "::${{steps.gen-token.outputs.gen-token}}::"
       - name: Output message(debug)
         run: echo "::debug::Set the Octocat variable"
-      - name: Stop command workflow processing
-        run: |
-          echo "::stop-commands::${{steps.gen-token.outputs.gen-token}}"
+      # - name: Stop command workflow processing
+      #   run: |
+      #     echo "::stop-commands::${{steps.gen-token.outputs.gen-token}}"
       - name: Masking a string
         run: echo "::add-mask::Octocat"
       - name: Output message(notice)
@@ -24,7 +28,7 @@ jobs:
         run: echo "::warning file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
       - name: Output message(error)
         run: echo "::error file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
-      - name: Resume workflow command processing
-        run:  echo "::${{steps.gen-token.outputs.gen-token}}::"
+      # - name: Resume workflow command processing
+      #   run:  echo "::${{steps.gen-token.outputs.gen-token}}::"
       - name: Output message(without parameter)
         run: echo "::error file=,line=,col=,endColumn=::Missing semicolon"
