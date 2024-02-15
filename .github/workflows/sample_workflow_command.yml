@@ -11,10 +11,10 @@ jobs:
         run: |
           COMMAND_RESUME_TOKEN=$(echo -n ${{ github.token }} | sha256sum | head -c 64)
           echo "gen-token=$COMMAND_RESUME_TOKEN" >> $GITHUB_OUTPUT
-          echo "::stop-commands::${{steps.gen-token.outputs.gen-token}}"
+          echo "::stop-commands::$COMMAND_RESUME_TOKEN"
           echo "::debug::Not stop!!!!!!!!!!!!!!!!"
           echo "::debug::Not stop yet!!!!!!!!!!!!!!!!"
-          echo "::${{steps.gen-token.outputs.gen-token}}::"
+          echo "::$COMMAND_RESUME_TOKEN::"
       - name: Output message(debug)
         run: echo "::debug::Set the Octocat variable"
       # - name: Stop command workflow processing
