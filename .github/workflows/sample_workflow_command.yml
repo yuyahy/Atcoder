@@ -6,15 +6,16 @@ jobs:
   test-workflow-commands:
     runs-on: ubuntu-latest
     steps:
-      - name: Generate token
+      - name: Stop and restart workflow commands
         id: gen-token
         run: |
           COMMAND_RESUME_TOKEN=$(echo -n ${{ github.token }} | sha256sum | head -c 64)
           echo "gen-token=$COMMAND_RESUME_TOKEN" >> $GITHUB_OUTPUT
           echo "::stop-commands::$COMMAND_RESUME_TOKEN"
-          echo "::error::Not stop!!!!!!!!!!!!!!!!"
-          echo "::error::Not stop yet!!!!!!!!!!!!!!!!"
+          echo "::error::Stop!!!!!!!!!!!!!!!!"
+          echo "::error::Stop yet!!!!!!!!!!!!!!!!"
           echo "::$COMMAND_RESUME_TOKEN::"
+          echo "::error::Not stop!!!!!!!!!!!!!!!!"
       - name: Output message(debug)
         run: echo "::debug::Set the Octocat variable"
       # - name: Stop command workflow processing
