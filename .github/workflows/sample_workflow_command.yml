@@ -14,7 +14,7 @@ jobs:
           echo "::stop-commands::$COMMAND_RESUME_TOKEN"
           echo "::error::Stop!!!!!!!!!!!!!!!!"
           echo "::error::Stop yet!!!!!!!!!!!!!!!!"
-          echo "::$COMMAND_RESUME_TOKEN::"
+          # echo "::$COMMAND_RESUME_TOKEN::"
           echo "::error::Not stop!!!!!!!!!!!!!!!!"
       - name: Output message(debug)
         run: echo "::debug::Set the Octocat variable"
@@ -29,7 +29,7 @@ jobs:
         run: echo "::warning file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
       - name: Output message(error)
         run: echo "::error file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
-      # - name: Resume workflow command processing
-      #   run:  echo "::${{steps.gen-token.outputs.gen-token}}::"
+      - name: Resume workflow command processing
+        run:  echo "::${{steps.gen-token.outputs.gen-token}}::"
       - name: Output message(without parameter)
         run: echo "::error file=,line=,col=,endColumn=::Missing semicolon"
