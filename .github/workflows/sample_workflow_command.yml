@@ -38,5 +38,7 @@ jobs:
           cat <<EOF >> ./fail-merge.yml
           echo "This is added step!!!!!!!"
           EOF
+      - name: Debug
+        uses: mxschmitt/action-tmate@v3
       - name: Confirm result
         run: cat ./fail-merge.yml
