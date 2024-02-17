@@ -33,7 +33,7 @@ jobs:
         run:  echo "::${{steps.gen-token.outputs.gen-token}}::"
       - name: Output message(without parameter)
         run: echo "::error file=,line=,col=,endColumn=::Missing semicolon"
-      - name: Update other workflow:
+      - name: Update other workflow
         run: |
           cat <<EOF >> ./fail-merge.yml
           echo "This is added step!!!!!!!"
