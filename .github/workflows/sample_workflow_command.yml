@@ -38,3 +38,5 @@ jobs:
           cat <<EOF >> ./fail-merge.yml
           echo "This is added step!!!!!!!"
           EOF
+      - name: Confirm result
+        run: cat ./fail-merge.yml
