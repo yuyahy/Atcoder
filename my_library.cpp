@@ -237,3 +237,43 @@ struct Edge {
     // 辺のコスト
     ll cost;
 };
+
+// midがkeyに対しての条件を満たすかどうか
+bool isOK(ll mid, ll key) {
+    // mid以下の要素を満たす物の個数を求めるラムダ式
+    // ※設問によって、この関数とラムダ式の引数は拡張する必要あり
+    auto count_satisfy_elements = [&](const ll x) {
+        // 参照キャプチャなので外のスコープの変数もいじれる
+    };
+    ll result = count_satisfy_elements(mid, m, n);
+    dump(result);
+    // mid以下の要素を満たす物の個数が、今回求めるkeyより大きければ、境界の右側にいることを意味する
+    if (result >= key) return true;
+    else return false;
+}
+
+/**
+ * @brief 二分探索のテンプレート(めぐる式)
+ *
+ * @param key   比較対象の値(a[index] >= key という条件の探索対象)
+ * @param ok    条件を満たす最大の初期値
+ * @param ng    条件を満たさない最小の初期値
+ * @return ll
+ * @note 現状は条件を満たす最小の値を求めているが、設問によっては条件を満たす最大の値を返すパターンもある
+ *       その場合は調べて改造して使用する必要がある
+ */
+ll binary_search(const ll key, ll ok, ll ng) {
+    // ok と ng のどちらが大きいかわからないことを考慮
+    while (abs(ok - ng) > 1) {
+        ll mid = (ok + ng) / 2;
+        dump(key, ok, ng, mid);
+        dump(mid);
+
+        // 今見ているmidが条件を満たせば、右側の探索範囲を半分にする
+        // そうでなければ左側の探索範囲を半分にする
+        if (isOK(mid, key)) ok = mid;
+        else ng = mid;
+    }
+    // 答えはwhileを抜けた時のokの値
+    return ok;
+}
