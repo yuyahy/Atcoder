@@ -58,28 +58,17 @@ int main() {
     // set precision (10 digit)
     cout << setprecision(10);
 
-    ll N(0), M(0);
-    cin >> N >> M;
+    ll N(0);
+    cin >> N;
     // グラフを表現する隣接リスト
-    // 駅数 + 始点 & 終点の合計N+2頂点
-    vector<vector<FlowEdge>> non_directed_graph(N + 2);
-    // 各駅を特急駅にした時の損益を格納する
-    vector<ll> costs(N, 0);
-    REP(i, N) cin >> costs[i];
+    // 生徒数 + 座席数 + 始点 & 終点の合計2N+2頂点
+    const ll GRAPH_SIZE = 2 * N + 2;
+    const ll GRAPH_START_IDX = 2 * N;
+    const ll GRAPH_END_IDX = 2 * N + 1;
 
-    // 特急駅同士の依存関係を得る
-    vector<pair<ll, ll>> dependencies(M);
-    REP(i, M) {
-        ll A(0), B(0);
-        cin >> A >> B;
-        A--;
-        B--;
-        dump(A, B, M);
-        dependencies[i] = {A, B};
-    }
+    vector<vector<FlowEdge>> non_directed_graph(GRAPH_SIZE);
 
-    dump(costs, dependencies);
-
+    // 辺を張るためのラムダ式
     auto create_edge = [&](const ll weight, const ll vertex,
                            const ll other_vertex) {
         // FlowEdge.revを求めるために、現時点の頂点に隣接している辺の数を保持しておく
@@ -93,22 +82,33 @@ int main() {
         non_directed_graph[other_vertex].push_back(flow_edge_2);
     };
 
-    // グラフを作る
-    ll offset(0);
+    // i番目の生徒とj番目の座れる席の依存関係を取得
+    vector<pair<ll, ll>> dependencies;
+    const ll edge_weight(1);
+
     REP(i, N) {
-        // 1.始点→i番目の駅の辺を張る
-        auto cost_from_start_to_station = costs[i] > 0 ? costs[i] : 0;
-        create_edge(cost_from_start_to_station, N, i);
-        offset += cost_from_start_to_station;
-        // 2.i番目の駅→終点の辺を張る
-        auto cost_from_station_to_end = costs[i] > 0 ? 0 : (costs[i] * -1);
-        dump(cost_from_station_to_end);
-        create_edge(cost_from_station_to_end, i, N + 1);
+        string str("");
+        cin >> str;
+        REP(j, N) {
+            if (str[j] == '#') {
+                // i番目の生徒はj番目の席に座る事ができる
+                // ※iとjで番号が被らない様にするためにNでオフセット
+                dependencies.push_back({i, N + j});
+                create_edge(edge_weight, i, N + j);
+            }
+        }
+        dump(str);
     }
 
-    // 3.i番目の駅が他のj番目の駅と依存関係がある場合は辺を張る
-    for (const auto& [vertex, other_vertex] : dependencies) {
-        create_edge(INF, vertex, other_vertex);
+    dump(dependencies);
+
+    // グラフを作る
+    // REP3(i, 1, N + 1) {
+    REP(i, N) {
+        // 1.始点→i番目の生徒の辺を張る
+        create_edge(edge_weight, GRAPH_START_IDX, i);
+        // 2.終点→j番目の座席の辺を張る
+        create_edge(edge_weight, N + i, GRAPH_END_IDX);
     }
 
     // 最大フロー問題
@@ -161,14 +161,14 @@ int main() {
     ll sum_flow(0);
     while (true) {
         // その頂点が既に訪問済みかを表現する
-        vector<bool> seen(N, false);
+        vector<bool> seen(GRAPH_SIZE, false);
         ll max_flow = 1e12;
-        // ※始点をインデックス:N、終点をN+1に格納している点に注意
-        auto flow = dfs(dfs, non_directed_graph, N, N + 1, seen, max_flow);
+        // ※始点をインデックス:2*N、終点をN+1に格納している点に注意
+        auto flow = dfs(dfs, non_directed_graph, GRAPH_START_IDX, GRAPH_END_IDX,
+                        seen, max_flow);
         // 流せる流量が0になった=もう流せる経路がない
         if (!flow) break;
         sum_flow += flow;
     }
-    dump(offset, sum_flow);
-    cout << offset - sum_flow << endl;
+    cout << sum_flow << endl;
 }
