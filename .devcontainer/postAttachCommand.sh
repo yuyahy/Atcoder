@@ -14,5 +14,5 @@
 # eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # actのインストール
-brew install act
-curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
+# brew install act
+# curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
