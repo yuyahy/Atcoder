@@ -63,6 +63,8 @@ const string upper_alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const string integers = "0123456789";
 
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
     // set precision (10 digit)
     cout << setprecision(10);
 }
