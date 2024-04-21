@@ -5,6 +5,8 @@ RUN apt-get update \
     && apt-get -y install git iproute2 procps lsb-release gdb\
     && apt-get install -y sudo wget curl vim zsh
 
+RUN chsh -s /bin/zsh
+
 RUN cd /tmp \
     && git clone https://github.com/atcoder/ac-library.git
 
@@ -29,9 +31,12 @@ RUN echo 'asub="atcoder-tools submit -f -u"'
 # コンパイルオプションマシマシだと、ローカルでTLEになるが、Atcoder上でコンパイルすると成功するケースがあったため、提出用のコンパイルオプションを変更
 RUN echo 'alias atest_sub="g++-12 -std=gnu++20 -O2 -Wall -Wextra -mtune=native -march=native -fconstexpr-depth=2147483647 -fconstexpr-loop-limit=2147483647 -fconstexpr-ops-limit=2147483647 -I/tmp/ac-library main.cpp; atcoder-tools test"' >> ${shell_rc}
 RUN echo 'alias atest="g++-12 -g -Wfatal-errors -Wall -Wextra -Wshadow -Wconversion -Wfloat-equal -ftrapv -fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover -std=gnu++20 -I /tmp/ac-library main.cpp -D DEFINED_ONLY_IN_LOCAL; atcoder-tools test"' >> ${shell_rc}
-RUN echo 'alias agen="atcoder-tools gen --without-login --workspace=/workspaces/atcoder --template /workspaces/atcoder/my_template.cpp"' >> ${shell_rc}
-RUN echo 'alias agenlogin="atcoder-tools gen --workspace /workspaces/atcoder --template /workspaces/atcoder/my_template.cpp"' >> ${shell_rc}
+RUN echo 'alias agen="atcoder-tools gen --without-login --workspace=/workspaces/atcoder/contest --template /workspaces/atcoder/my_template.cpp"' >> ${shell_rc}
+RUN echo 'alias agenlogin="atcoder-tools gen --workspace /workspaces/atcoder/contest --template /workspaces/atcoder/my_template.cpp"' >> ${shell_rc}
 RUN echo 'alias asub="atcoder-tools submit -u"' >> ${shell_rc}
+
+# Rust
+# curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 
 # 以下はGithub Action用
 # Homebrewのインストール

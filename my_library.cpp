@@ -277,3 +277,18 @@ ll binary_search(const ll key, ll ok, ll ng) {
     // 答えはwhileを抜けた時のokの値
     return ok;
 }
+
+/**
+ * @brief 文字列の中の特定の文字を別の文字に置換する
+ *
+ * @param str
+ * @param target
+ * @param replacement
+ */
+void replaceChars(std::string& str, char target, char replacement) {
+    size_t pos = 0;
+    while ((pos = str.find(target, pos)) != std::string::npos) {
+        str[pos] = replacement;
+        ++pos;
+    }
+}

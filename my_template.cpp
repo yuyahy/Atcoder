@@ -13,6 +13,25 @@
 #define REP_R(i, n) for (int i = (int)(n)-1; (i) >= 0; --(i))
 #define REP3R(i, m, n) for (int i = (int)(m)-1; (i) >= (int)(n); --(i))
 
+#define YESNO(T)               \
+    if (T) {                   \
+        cout << "YES" << endl; \
+    } else {                   \
+        cout << "NO" << endl;  \
+    }
+#define yesno(T)               \
+    if (T) {                   \
+        cout << "yes" << endl; \
+    } else {                   \
+        cout << "no" << endl;  \
+    }
+#define YesNo(T)               \
+    if (T) {                   \
+        cout << "Yes" << endl; \
+    } else {                   \
+        cout << "No" << endl;  \
+    }
+
 #include <bits/stdc++.h>
 
 #include <atcoder/all>
@@ -36,6 +55,12 @@ const int dx_4[4] = {0, 1, 0, -1};
 // 8近傍
 const int dy_8[8] = {-1, -1, 0, 1, 1, 1, 0, -1};
 const int dx_8[8] = {0, 1, 1, 1, 0, -1, -1, -1};
+
+// アルファベット(小文字大文字)
+const string lower_alphabet = "abcdefghijklmnopqrstuvwxyz";
+const string upper_alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+// 数字
+const string integers = "0123456789";
 
 int main() {
     // set precision (10 digit)
