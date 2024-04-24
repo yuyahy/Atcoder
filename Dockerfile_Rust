@@ -1,0 +1,17 @@
+# TODO: slimだと上手くいかない可能性あり
+FROM rust:1.70.0-bullseye
+RUN apt-get -y update
+RUN apt-get -y install git sudo wget curl zsh nano
+
+RUN chsh -s /bin/zsh
+
+RUN mkdir -p /root/.atcodertools/template
+RUN mkdir -p /root/atcoder-workspace
+
+RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# TODO: ACL, rust-analyzerの導入
+RUN cargo install cargo-compete --locked
+RUN rustup component add rustfmt
+
+CMD ["/bin/zsh"]
