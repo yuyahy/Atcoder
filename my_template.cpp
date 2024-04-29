@@ -32,6 +32,10 @@
         cout << "No" << endl;  \
     }
 
+#define COUT(x) cout << (x) << endl
+#define SCOUT(x) cout << (x) << " "
+#define ENDL cout << endl
+
 #include <bits/stdc++.h>
 
 #include <atcoder/all>
@@ -67,4 +71,6 @@ int main() {
     cin.tie(nullptr);
     // set precision (10 digit)
     cout << setprecision(10);
+
+    // 考察メモ
 }
