@@ -34,6 +34,8 @@ RUN echo 'alias atest="g++-12 -g -Wfatal-errors -Wall -Wextra -Wshadow -Wconvers
 RUN echo 'alias agen="atcoder-tools gen --without-login --workspace=/workspaces/atcoder/contest --template /workspaces/atcoder/my_template.cpp"' >> ${shell_rc}
 RUN echo 'alias agenlogin="atcoder-tools gen --workspace /workspaces/atcoder/contest --template /workspaces/atcoder/my_template.cpp"' >> ${shell_rc}
 RUN echo 'alias asub="atcoder-tools submit -u"' >> ${shell_rc}
+RUN echo 'alias shojin="source /workspaces/atcoder/shojin.sh"' >> ${shell_rc}
+
 
 # Rust
 # curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh

@@ -1,3 +1,8 @@
+if [ "$#" -ne 2 ]; then
+    echo "エラー: 引数が正しく指定されていません。2つの引数が必要です。"
+    exit 0  # エラーコード1で終了する
+fi
+
 # コンテスト名称
 CONTEST_NAME=$1
 # 精進する問題の番号(e.g. 'A','B',...etc)
@@ -14,3 +19,6 @@ for dir in */; do
         rm -rf "$dir"
     fi
 done
+
+# Note: source {シェルスクリプト名}で実行する必要がある
+cd /workspaces/atcoder/contest/$1/$2
