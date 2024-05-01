@@ -16,3 +16,6 @@
 # actのインストール
 # brew install act
 # curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash
+
+# cargo compete init atcoder
+# cargo compete login atcoder
