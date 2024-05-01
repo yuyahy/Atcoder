@@ -3,3 +3,5 @@ out_*.txt
 metadata.json
 a.out
 cpp-dump
+target
+contest/*/testcases

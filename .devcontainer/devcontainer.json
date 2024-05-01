@@ -7,6 +7,7 @@
 		"context": "..",
 		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
 		"dockerfile": "../Dockerfile"
+		// "dockerfile": "../Dockerfile_Rust"
 	},
 	"extensions": [
 		"ms-vscode.cpptools",
@@ -18,7 +19,8 @@
 		"streetsidesoftware.code-spell-checker",
 		"shardulm94.trailing-spaces",
 		"PKief.material-icon-theme",
-		"Gruntfuggly.todo-tree"
+		"Gruntfuggly.todo-tree",
+		"rust-lang.rust-analyzer"
 	],
 	"postAttachCommand": "bash ./.devcontainer/postAttachCommand.sh",
 	// Features to add to the dev container. More info: https://containers.dev/features.
