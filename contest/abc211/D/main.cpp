@@ -79,6 +79,18 @@ int main() {
     // - DFSで経路を全列挙し上記で求めた移動回数の経路の数をカウントする
     //  - ※mint
 
+    // Note:
+    // - 結果: {解説AC}
+    // {解説ACの場合}どうすれば解けたか？
+    // - 知識: {十分}
+    //      - BFS、DFSは知っている
+    // - 考察: {不十分}
+    //      - BFSで最短経路を求める→DFSで経路の数をカウントする方針にしたがTLE
+    //      - BFSで最短経路を求めつつ、その経路の数をカウントする方法が思いつかなかった
+    // - 実装: {十分}
+    //      - 最短経路の数もカウントする方法が理解できれば実装は簡単
+    //      - mintは付けるのを忘れない様に実装前にコメントで注意書きした
+
     ll N(0), M(0);
     cin >> N >> M;
     vector<vector<ll>> non_directed_graph(N);
@@ -91,72 +103,43 @@ int main() {
         non_directed_graph[B].push_back(A);
     }
 
-    mint result;
+    // Note:
+    // 普段のBFSを改造する事で最短経路に至るための移動回数だけでなく、
+    // その経路の数もカウントする事ができる
 
     // BFSで最短経路を求める
     // BFSのためのデータ構造
     // 頂点1からの最短経路を記録するリスト
     vector<ll> shortest_distance(N, -1);
+    //  頂点1からの最短経路の個数を記録するリスト(※mint)
     vector<mint> shortest_count(N, 0);
     // 現在見つかっていて未訪問の頂点のリスト
     queue<ll> next_verticies;
 
-    shortest_count[0] = 1;
-
-    // TODO: 理解
-
     shortest_distance[0] = 0;
+    shortest_count[0] = 1;
     next_verticies.push(0);
     while (!next_verticies.empty()) {
         auto current_vertex = next_verticies.front();
         next_verticies.pop();
 
         for (const auto& next_vertex : non_directed_graph[current_vertex]) {
-            // if (shortest_distance[next_vertex] != -1) continue;
-            // 最短距離を更新
-            // 辺の重み=1なので、隣接している頂点までは、現在注目している頂点+1の経路でアクセスできる
-            // shortest_distance[next_vertex] =
-            //     shortest_distance[current_vertex] + 1;
-            // if (shortest_distance[next_vertex] <
-            //     shortest_distance[current_vertex] + 1) {
             if (shortest_distance[next_vertex] == -1) {
+                // 未到達のケース
                 shortest_distance[next_vertex] =
                     shortest_distance[current_vertex] + 1;
+                // 未到達なのでここに来るまでの最短経路の数は直前の頂点に到達するための最短経路の数に等しい
                 shortest_count[next_vertex] = shortest_count[current_vertex];
-
                 next_verticies.push(next_vertex);
-
             } else if (shortest_distance[next_vertex] ==
                        shortest_distance[current_vertex] + 1) {
+                // 既に到達済み & 最短距離への経路が増えるケース
                 shortest_count[next_vertex] += shortest_count[current_vertex];
-                // shortest_count[next_vertex] %= MOD;
             }
             dump(shortest_count[next_vertex].val());
         }
     }
     dump(shortest_distance[N - 1]);
 
-    // DFSのためのデータ構造
-    // その頂点が既に訪問済みかを表現する
-    vector<bool> seen(N, false);
-    // auto dfs = [&](auto self, const vector<vector<ll>>& graph,
-    //                vector<bool> seen, ll current_vertex,
-    //                ll route_count) -> void {
-    //     seen[current_vertex] = true;
-    //     //
-    //     if (current_vertex == N - 1) {
-    //         if (route_count == shortest_distance[N - 1]) result++;
-    //         return;
-    //     }
-    //     for (const auto next_vertex : graph[current_vertex]) {
-    //         if (seen[next_vertex] || route_count + 1 > shortest_distance[N - 1])
-    //             continue;
-    //         self(self, graph, seen, next_vertex, route_count + 1);
-    //     }
-    // };
-    // dfs(dfs, non_directed_graph, seen, 0, 0);
-
-    //  - ※mint
-    //COUT(result.val());
     COUT(shortest_count[N - 1].val());
 }
