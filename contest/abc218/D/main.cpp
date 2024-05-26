@@ -77,21 +77,41 @@ int main() {
     cout << setprecision(10);
 
     // 考察メモ
+    // Nmax=2000なので愚直な全探索(O(N^4))はできない
+    // 対角の2座標が決まれば、他の2座標も求まる
+
+    // Note:
+    // - 結果: {自力AC}
+    // {自力ACの場合}なぜ解けたか？
+    // - ACに結びついた点
+    //      - 矩形は対角線の端点の2点が決まれば形状が決まる事に着目できたため
+    // - 改善点
+    //      - 特になし
 
     ll N(0);
     cin >> N;
-    vector<pair<string, ll>> SC(N, {"", 0});
 
-    ll sum(0);
-    for (auto& elem : SC) {
+    vector<pll> points(N);
+    set<pll> exist_points;
+
+    for (auto& elem : points) {
         cin >> elem.first >> elem.second;
-        sum += elem.second;
+        exist_points.insert(elem);
     }
-    dump(SC);
 
-    sort(SC.begin(), SC.end());
-    dump(SC);
+    ll cnt(0);
+    REP(i, N - 1) REP3(j, i, N) {
+        auto [x, y] = points[i];
+        auto [x_other, y_other] = points[j];
 
-    auto mod = sum % N;
-    COUT(SC[mod].first);
+        // 対辺にならないケースはスキップ
+        if (x == x_other or y == y_other) continue;
+
+        if (!exist_points.count({x, y_other}) or
+            !exist_points.count({x_other, y}))
+            continue;
+        cnt++;
+    }
+    // 一つの矩形に対し、2つの対角線を処理してダブっているので割る
+    COUT(cnt / 2);
 }

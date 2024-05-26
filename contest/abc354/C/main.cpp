@@ -36,6 +36,8 @@
 #define SCOUT(x) cout << (x) << " "
 #define ENDL cout << endl
 
+#define ALL(a) (a).begin(), (a).end()
+
 #include <bits/stdc++.h>
 
 #include <atcoder/all>
