@@ -9,8 +9,8 @@
 #endif
 #define REP(i, n) for (int i = 0; (i) < (int)(n); ++(i))
 #define REP3(i, m, n) for (int i = (m); (i) < (int)(n); ++(i))
-#define REP_R(i, n) for (int i = (int)(n)-1; (i) >= 0; --(i))
-#define REP3R(i, m, n) for (int i = (int)(n)-1; (i) >= (int)(m); --(i))
+#define REP_R(i, n) for (int i = (int)(n) - 1; (i) >= 0; --(i))
+#define REP3R(i, m, n) for (int i = (int)(n) - 1; (i) >= (int)(m); --(i))
 #include <bits/stdc++.h>
 
 #include <atcoder/all>
@@ -125,7 +125,7 @@ ll ceil(ll x, ll m) { return (x + m - 1) / m; }
 // vector<vector<ll> > v(n + 1, vector<ll>(n + 1, 0));
 // comb(v);
 // v[n][k]が求めるnCkの値
-void comb(vector<vector<ll> >& v) {
+void comb(vector<vector<ll>>& v) {
     for (ll i = 0; i < (ll)v.size(); i++) {
         v[i][0] = 1;
         v[i][i] = 1;
@@ -291,4 +291,65 @@ void replaceChars(std::string& str, char target, char replacement) {
         str[pos] = replacement;
         ++pos;
     }
+}
+
+/**
+ * @brief 閉区間[seg_left, seg_right]と[seg_other_left, seg_other_right]が共通区間を持つか判定する
+ *
+ * @param seg_right
+ * @param seg_left
+ * @param seg_other_right
+ * @param seg_other_left
+ * @return true
+ * @return false
+ * @note 引数の型はint, ll doubleなどでOKにできる様にautoを使用
+ *
+ * https://atcoder.jp/contests/abc207/editorial/2152
+ */
+bool has_same_area(auto seg_right, auto seg_left, auto seg_other_right,
+                   auto seg_other_left) {
+    return max(seg_left, seg_other_left) <= min(seg_right, seg_other_right);
+}
+
+/*
+    DFSのラムダ関数のテンプレート
+    頂点数N、辺数Mの場合にO(N+M)
+    ※seen変数で同じ頂点を何回も訪問しない様にしないとTLEするケースが多い
+    ※返り値が欲しいケースなど、設問に合わせて適宜変更する
+*/
+//その頂点が既に訪問済みかを表現する
+vector<bool> seen(N, false);
+auto dfs = [&](auto self, const vector<vector<ll>>& Graph, const ll vertex,
+               vector<bool>& seen) -> void {
+    // 訪問済みの頂点として記録
+    seen[vertex] = true;
+
+    // 何らかの処理
+
+    // 現在注目している頂点と隣接している頂点に対して再帰
+    for (const auto next_vertex : Graph[vertex]) {
+        if (seen[next_vertex]) continue;
+        self(self, Graph, next_vertex, seen);
+    }
+};
+
+// {0, 1, ..., n-1} の部分集合の全探索
+for (int bit = 0; bit < (1 << n); ++bit) {
+    /* bit で表される集合の処理を書く */
+
+    /* きちんとできていることを確認してみる */
+    // bit の表す集合を求める
+    vector<int> S;
+    for (int i = 0; i < n; ++i) {
+        if (bit & (1 << i)) {  // i が bit に入るかどうか
+            S.push_back(i);
+        }
+    }
+
+    // bit の表す集合の出力
+    cout << bit << ": {";
+    for (int i = 0; i < (int)S.size(); ++i) {
+        cout << S[i] << " ";
+    }
+    cout << "}" << endl;
 }
