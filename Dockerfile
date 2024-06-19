@@ -11,6 +11,7 @@ RUN cd /tmp \
     && git clone https://github.com/atcoder/ac-library.git
 
 RUN pip3.8 install atcoder-tools
+RUN pip3.8 install atcoder-tools --upgrade
 
 RUN mkdir -p /root/.atcodertools/template
 RUN mkdir -p /root/atcoder-workspace
@@ -19,6 +20,8 @@ RUN mkdir -p /root/atcoder-workspace
 RUN curl -s -S https://gist.githubusercontent.com/gghatano/1aab64239be88181d0fc91069c6fe9b4/raw/625a707e7b0c38777e5b8e9984871481243a8597/template.cpp >> /root/.atcodertools/template/template.cpp
 RUN curl -s -S https://gist.githubusercontent.com/gghatano/1aab64239be88181d0fc91069c6fe9b4/raw/625a707e7b0c38777e5b8e9984871481243a8597/zzz_algorithm.cpp >> /root/atcoder-workspace/algorighm.cpp
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# Oh my zshのテーマを変更
+RUN sed -i.bak 's/^ZSH_THEME="[^"]*"/ZSH_THEME="agnoster"/' ~/.zshrc
 
 # ARG shell_rc="/root/.bashrc"
 ARG shell_rc="/root/.zshrc"
