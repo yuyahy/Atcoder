@@ -38,6 +38,9 @@
 
 #define ALL(a) (a).begin(), (a).end()
 
+#define INPUT_VEC(a) \
+    for (auto& elem : a) cin >> elem
+
 #include <bits/stdc++.h>
 
 #include <atcoder/all>
