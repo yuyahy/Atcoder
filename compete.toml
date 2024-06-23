@@ -37,6 +37,7 @@ use std::cmp::{max, min};
 use std::collections::{HashMap, HashSet, VecDeque};
 #[allow(unused_imports)]
 use std::iter::FromIterator;
+#[allow(non_snake_case)]
 
 #[fastout]
 fn main() {
@@ -121,7 +122,7 @@ platform = "atcoder"
 # - `contest`:      Contest ID. **May be nil**
 # - `package_name`: Package name
 #path = "./{{ contest }}"
-path = "/workspaces/atcoder/contest/{{ contest }}"
+path = "/workspaces/atcoder/contest/rust/{{ contest }}"
 
 #[new]
 #kind = "oj-api"

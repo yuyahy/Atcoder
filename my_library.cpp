@@ -10,7 +10,36 @@
 #define REP(i, n) for (int i = 0; (i) < (int)(n); ++(i))
 #define REP3(i, m, n) for (int i = (m); (i) < (int)(n); ++(i))
 #define REP_R(i, n) for (int i = (int)(n) - 1; (i) >= 0; --(i))
-#define REP3R(i, m, n) for (int i = (int)(n) - 1; (i) >= (int)(m); --(i))
+#define REP3R(i, m, n) for (int i = (int)(m) - 1; (i) >= (int)(n); --(i))
+
+#define YESNO(T)               \
+    if (T) {                   \
+        cout << "YES" << endl; \
+    } else {                   \
+        cout << "NO" << endl;  \
+    }
+#define yesno(T)               \
+    if (T) {                   \
+        cout << "yes" << endl; \
+    } else {                   \
+        cout << "no" << endl;  \
+    }
+#define YesNo(T)               \
+    if (T) {                   \
+        cout << "Yes" << endl; \
+    } else {                   \
+        cout << "No" << endl;  \
+    }
+
+#define COUT(x) cout << (x) << endl
+#define SCOUT(x) cout << (x) << " "
+#define ENDL cout << endl
+
+#define ALL(a) (a).begin(), (a).end()
+
+#define INPUT_VEC(a) \
+    for (auto& elem : a) cin >> elem
+
 #include <bits/stdc++.h>
 
 #include <atcoder/all>
@@ -19,11 +48,28 @@ using namespace std;
 
 typedef long long ll;
 typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+typedef vector<ll> vll;
 
 // mint
 using mint = static_modint<1000000007>;
 // ll int
 ll INF = numeric_limits<ll>::max() / 2;
+
+// 4近傍(左上原点)
+// Y = (↑, そのまま, ↓, そのまま)
+// X = (そのまま, →, そのまま, ←)
+const int dy_4[4] = {-1, 0, 1, 0};
+const int dx_4[4] = {0, 1, 0, -1};
+// 8近傍
+const int dy_8[8] = {-1, -1, 0, 1, 1, 1, 0, -1};
+const int dx_8[8] = {0, 1, 1, 1, 0, -1, -1, -1};
+
+// アルファベット(小文字大文字)
+const string lower_alphabet = "abcdefghijklmnopqrstuvwxyz";
+const string upper_alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+// 数字
+const string integers = "0123456789";
 
 // 動的にmodintの型を決める事ができるか不明なので、一旦定数にする
 constexpr int mod = INT_MAX;
@@ -311,6 +357,20 @@ bool has_same_area(auto seg_right, auto seg_left, auto seg_other_right,
     return max(seg_left, seg_other_left) <= min(seg_right, seg_other_right);
 }
 
+/**
+ * @brief 累積和の配列を求めるテンプレート関数
+ *
+ * @tparam T            任意の型(和が定義されていないとエラー or 未定義動作になる想定)
+ * @param array         累積和を求める対象の配列
+ * @return vector<T>    arrayの累積和を格納した配列
+ */
+template <typename T>
+vector<T> obtain_cumulative_array(const vector<T>& array) {
+    vector<T> accum_array(array.size());
+    inclusive_scan(ALL(array), accum_array.begin());
+    return accum_array;
+}
+
 /*
     DFSのラムダ関数のテンプレート
     頂点数N、辺数Mの場合にO(N+M)
@@ -318,38 +378,38 @@ bool has_same_area(auto seg_right, auto seg_left, auto seg_other_right,
     ※返り値が欲しいケースなど、設問に合わせて適宜変更する
 */
 //その頂点が既に訪問済みかを表現する
-vector<bool> seen(N, false);
-auto dfs = [&](auto self, const vector<vector<ll>>& Graph, const ll vertex,
-               vector<bool>& seen) -> void {
-    // 訪問済みの頂点として記録
-    seen[vertex] = true;
+// vector<bool> seen(N, false);
+// auto dfs = [&](auto self, const vector<vector<ll>>& Graph, const ll vertex,
+//                vector<bool>& seen) -> void {
+//     // 訪問済みの頂点として記録
+//     seen[vertex] = true;
 
-    // 何らかの処理
+//     // 何らかの処理
 
-    // 現在注目している頂点と隣接している頂点に対して再帰
-    for (const auto next_vertex : Graph[vertex]) {
-        if (seen[next_vertex]) continue;
-        self(self, Graph, next_vertex, seen);
-    }
-};
+//     // 現在注目している頂点と隣接している頂点に対して再帰
+//     for (const auto next_vertex : Graph[vertex]) {
+//         if (seen[next_vertex]) continue;
+//         self(self, Graph, next_vertex, seen);
+//     }
+// };
 
-// {0, 1, ..., n-1} の部分集合の全探索
-for (int bit = 0; bit < (1 << n); ++bit) {
-    /* bit で表される集合の処理を書く */
+// // {0, 1, ..., n-1} の部分集合の全探索
+// for (int bit = 0; bit < (1 << n); ++bit) {
+//     /* bit で表される集合の処理を書く */
 
-    /* きちんとできていることを確認してみる */
-    // bit の表す集合を求める
-    vector<int> S;
-    for (int i = 0; i < n; ++i) {
-        if (bit & (1 << i)) {  // i が bit に入るかどうか
-            S.push_back(i);
-        }
-    }
+//     /* きちんとできていることを確認してみる */
+//     // bit の表す集合を求める
+//     vector<int> S;
+//     for (int i = 0; i < n; ++i) {
+//         if (bit & (1 << i)) {  // i が bit に入るかどうか
+//             S.push_back(i);
+//         }
+//     }
 
-    // bit の表す集合の出力
-    cout << bit << ": {";
-    for (int i = 0; i < (int)S.size(); ++i) {
-        cout << S[i] << " ";
-    }
-    cout << "}" << endl;
-}
+//     // bit の表す集合の出力
+//     cout << bit << ": {";
+//     for (int i = 0; i < (int)S.size(); ++i) {
+//         cout << S[i] << " ";
+//     }
+//     cout << "}" << endl;
+// }
