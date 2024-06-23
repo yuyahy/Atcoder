@@ -6,14 +6,11 @@
 		// Sets the run context to one level up instead of the .devcontainer folder.
 		"context": "..",
 		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
-		"dockerfile": "../Dockerfile"
+		"dockerfile": "./Dockerfile_for_Rust"
 		// "dockerfile": "../Dockerfile_Rust"
 	},
 	"extensions": [
-		"ms-vscode.cpptools",
-		"ms-vscode.cpptools-extension-pack",
 		"cschlosser.doxdocgen",
-		"ms-vscode.cpptools-themes",
 		"mosapride.zenkaku",
 		"oderwat.indent-rainbow",
 		"streetsidesoftware.code-spell-checker",
@@ -22,7 +19,7 @@
 		"Gruntfuggly.todo-tree",
 		"rust-lang.rust-analyzer"
 	],
-	"postAttachCommand": "bash ./.devcontainer/postAttachCommand.sh",
+	"postAttachCommand": "zsh ./.devcontainer/Rust/postAttachCommand_for_Rust.sh",
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {
 	// 	"docker-from-docker": {

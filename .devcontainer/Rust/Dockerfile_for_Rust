@@ -1,7 +1,7 @@
 # TODO: slimだと上手くいかない可能性あり
 FROM rust:1.70.0-bullseye
 RUN apt-get -y update
-RUN apt-get -y install git sudo wget curl zsh nano
+RUN apt-get -y install git sudo wget curl vim zsh nano
 
 RUN chsh -s /bin/zsh
 
@@ -13,5 +13,11 @@ RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/inst
 # TODO: ACL, rust-analyzerの導入
 RUN cargo install cargo-compete --locked
 RUN rustup component add rustfmt
+
+# Oh my zshのテーマを変更
+# (anon):12: character not in range
+# が出力され上手くいかないのでコメントアウト
+# RUN sed -i.bak 's/^ZSH_THEME="[^"]*"/ZSH_THEME="agnoster"/' ~/.zshrc
+
 
 CMD ["/bin/zsh"]
