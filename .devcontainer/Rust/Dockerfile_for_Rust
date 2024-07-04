@@ -14,6 +14,12 @@ RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/inst
 RUN cargo install cargo-compete --locked
 RUN rustup component add rustfmt
 
+ARG shell_rc="/root/.zshrc"
+RUN echo 'alias cnew="python3 /workspaces/atcoder/add_to_setting_json.py"' >> ${shell_rc}
+RUN echo 'alias ctest="cargo compete test"' >> ${shell_rc}
+RUN echo 'alias csub="cargo compete submit"' >> ${shell_rc}
+
+
 # Oh my zshのテーマを変更
 # (anon):12: character not in range
 # が出力され上手くいかないのでコメントアウト

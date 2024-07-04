@@ -47,6 +47,8 @@ fn main() {
         mut plan: [(usize, usize, usize); h]
     }
 }
+
+// 考察メモ
 '''
 
 [template.new]
